@@ -10,9 +10,18 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+        <div class="shape shape-5"></div>
+    </div>
+
     <!-- Header -->
     <header>
         <nav class="container">
@@ -22,9 +31,10 @@
             </div>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
+                <li><a href="#tech">Tech Stack</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#contact" class="nav-cta">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -33,114 +43,305 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h2 class="hero-title">Building the Future with <span class="highlight">Pragmatic AI</span></h2>
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>AI & Software Engineering</span>
+                </div>
+                <h2 class="hero-title">
+                    Building the Future with
+                    <span class="gradient-text typing-animation" id="dynamic-text">Pragmatic AI</span>
+                </h2>
                 <p class="hero-description">
-                    We create intelligent, scalable software solutions that solve real-world problems.
-                    From cloud infrastructure to AI-powered applications, we deliver excellence.
+                    Creating intelligent, scalable software solutions that solve real-world problems.
+                    From cloud infrastructure to AI-powered applications, delivering production-grade excellence.
                 </p>
                 <div class="cta-buttons">
-                    <a href="#contact" class="btn btn-primary">Get in Touch</a>
-                    <a href="#projects" class="btn btn-secondary">View Projects</a>
+                    <a href="#contact" class="btn btn-primary">
+                        <span>Get in Touch</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#projects" class="btn btn-secondary">
+                        <span>View Projects</span>
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="100">0</div>
+                        <div class="stat-label">% Test Coverage</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="0">0</div>
+                        <div class="stat-label">Downtime Deployments</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="24">0</div>
+                        <div class="stat-label">/ 7 Monitoring</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="tech" class="tech-stack scroll-animate">
+        <div class="container">
+            <h2 class="section-title">Tech Stack</h2>
+            <p class="section-description">
+                Building with modern, production-grade technologies
+            </p>
+
+            <div class="tech-grid">
+                <div class="tech-category">
+                    <h3>AI & ML</h3>
+                    <div class="tech-items">
+                        <div class="tech-item">
+                            <span class="tech-icon">🤖</span>
+                            <span>Claude AI</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">🧠</span>
+                            <span>PyTorch</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">🔬</span>
+                            <span>OpenAI API</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tech-category">
+                    <h3>Backend</h3>
+                    <div class="tech-items">
+                        <div class="tech-item">
+                            <span class="tech-icon">🐍</span>
+                            <span>Python</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">⚡</span>
+                            <span>FastAPI</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">🗄️</span>
+                            <span>PostgreSQL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tech-category">
+                    <h3>Frontend</h3>
+                    <div class="tech-items">
+                        <div class="tech-item">
+                            <span class="tech-icon">💚</span>
+                            <span>Vue 3</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">⚡</span>
+                            <span>Vite</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">🎨</span>
+                            <span>Tailwind CSS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tech-category">
+                    <h3>DevOps & Cloud</h3>
+                    <div class="tech-items">
+                        <div class="tech-item">
+                            <span class="tech-icon">🐳</span>
+                            <span>Docker</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">☁️</span>
+                            <span>AWS</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">🚀</span>
+                            <span>GitHub Actions</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="about">
+    <section id="about" class="about scroll-animate">
         <div class="container">
-            <h2 class="section-title">About PAISS</h2>
+            <h2 class="section-title">Core Principles</h2>
             <p class="section-description">
-                <strong>PAISS</strong> (Pragmatic AI Software Solutions) specializes in building production-grade
-                software with a focus on artificial intelligence, modern web technologies, and cloud infrastructure.
+                Building production-grade software with a focus on quality, reliability, and innovation
             </p>
             <div class="features">
-                <div class="feature-card">
+                <div class="feature-card glass-card">
                     <div class="feature-icon">🤖</div>
                     <h3>AI-Powered Solutions</h3>
-                    <p>Leveraging cutting-edge AI technologies to build intelligent systems that learn and adapt.</p>
+                    <p>Leveraging cutting-edge AI technologies like Claude and OpenAI to build intelligent systems that learn and adapt to real-world challenges.</p>
+                    <div class="feature-tags">
+                        <span class="tag">Machine Learning</span>
+                        <span class="tag">NLP</span>
+                        <span class="tag">LLMs</span>
+                    </div>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card glass-card">
                     <div class="feature-icon">☁️</div>
                     <h3>Cloud Infrastructure</h3>
-                    <p>Scalable, reliable cloud architecture with zero-downtime deployments and comprehensive monitoring.</p>
+                    <p>Scalable, reliable cloud architecture with zero-downtime blue-green deployments, comprehensive monitoring, and automated failover.</p>
+                    <div class="feature-tags">
+                        <span class="tag">AWS</span>
+                        <span class="tag">Docker</span>
+                        <span class="tag">Kubernetes</span>
+                    </div>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card glass-card">
                     <div class="feature-icon">⚡</div>
                     <h3>Modern Web Apps</h3>
-                    <p>Fast, responsive web applications built with the latest frameworks and best practices.</p>
+                    <p>Fast, responsive web applications built with Vue 3, FastAPI, and modern best practices. TDD-first approach with 100% test coverage.</p>
+                    <div class="feature-tags">
+                        <span class="tag">Vue 3</span>
+                        <span class="tag">FastAPI</span>
+                        <span class="tag">TDD</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="services">
+    <section id="services" class="services scroll-animate">
         <div class="container">
             <h2 class="section-title">Services</h2>
+            <p class="section-description">
+                End-to-end solutions for modern software development
+            </p>
             <div class="services-grid">
                 <div class="service-card">
-                    <h3>🎯 AI Integration</h3>
-                    <p>Integrate AI capabilities into your existing applications with custom models and APIs.</p>
+                    <div class="service-icon">🎯</div>
+                    <h3>AI Integration</h3>
+                    <p>Integrate AI capabilities into your existing applications with custom models, prompt engineering, and API integrations.</p>
+                    <ul class="service-features">
+                        <li>Custom model fine-tuning</li>
+                        <li>LLM API integration</li>
+                        <li>Prompt optimization</li>
+                    </ul>
                 </div>
                 <div class="service-card">
-                    <h3>🏗️ Platform Engineering</h3>
-                    <p>Multi-tenant platforms with shared infrastructure, monitoring, and automated deployments.</p>
+                    <div class="service-icon">🏗️</div>
+                    <h3>Platform Engineering</h3>
+                    <p>Multi-tenant platforms with shared infrastructure, monitoring, and automated blue-green deployments.</p>
+                    <ul class="service-features">
+                        <li>Zero-downtime deployments</li>
+                        <li>Automated failover</li>
+                        <li>Real-time monitoring</li>
+                    </ul>
                 </div>
                 <div class="service-card">
-                    <h3>📊 Data Analytics</h3>
-                    <p>Turn data into insights with visualization, monitoring, and real-time analytics dashboards.</p>
+                    <div class="service-icon">📊</div>
+                    <h3>Data Analytics</h3>
+                    <p>Turn data into insights with visualization, monitoring dashboards, and real-time analytics pipelines.</p>
+                    <ul class="service-features">
+                        <li>Real-time dashboards</li>
+                        <li>Custom metrics</li>
+                        <li>Automated alerts</li>
+                    </ul>
                 </div>
                 <div class="service-card">
-                    <h3>🔧 DevOps & CI/CD</h3>
-                    <p>Automated pipelines, infrastructure as code, and production-ready deployment strategies.</p>
+                    <div class="service-icon">🔧</div>
+                    <h3>DevOps & CI/CD</h3>
+                    <p>Automated pipelines, infrastructure as code, and production-ready deployment strategies with GitHub Actions.</p>
+                    <ul class="service-features">
+                        <li>Infrastructure as Code</li>
+                        <li>Automated testing</li>
+                        <li>Continuous deployment</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="projects">
+    <section id="projects" class="projects scroll-animate">
         <div class="container">
             <h2 class="section-title">Featured Projects</h2>
+            <p class="section-description">
+                Real-world applications built with modern technologies
+            </p>
             <div class="projects-grid">
                 <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-status live">● Live</span>
+                    </div>
                     <h3>Filter iCal</h3>
-                    <p>Advanced calendar filtering and viewing platform with real-time updates and subscription management.</p>
-                    <a href="https://filter-ical.de" target="_blank" class="project-link">Visit Project →</a>
+                    <p>Advanced calendar filtering and viewing platform with real-time updates, subscription management, and multi-tenant architecture.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Vue 3</span>
+                        <span>PostgreSQL</span>
+                        <span>Docker</span>
+                    </div>
+                    <a href="https://filter-ical.de" target="_blank" class="project-link">
+                        Visit Project
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
                 </div>
                 <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-status live">● Live</span>
+                    </div>
                     <h3>Multi-Tenant Platform</h3>
-                    <p>Production-grade infrastructure for hosting multiple applications with zero-downtime deployments.</p>
-                    <a href="https://monitoring.paiss.me" target="_blank" class="project-link">View Monitoring →</a>
+                    <p>Production-grade infrastructure for hosting multiple applications with zero-downtime blue-green deployments and comprehensive monitoring.</p>
+                    <div class="project-tech">
+                        <span>Docker</span>
+                        <span>Nginx</span>
+                        <span>Grafana</span>
+                        <span>AWS EC2</span>
+                    </div>
                 </div>
                 <div class="project-card coming-soon">
+                    <div class="project-header">
+                        <span class="project-status dev">● In Development</span>
+                    </div>
                     <h3>More Coming Soon</h3>
-                    <p>Exciting new projects in AI, automation, and cloud infrastructure are in development.</p>
+                    <p>Exciting new projects in AI automation, cloud infrastructure, and intelligent systems are currently in active development.</p>
+                    <div class="project-tech">
+                        <span>AI/ML</span>
+                        <span>Cloud</span>
+                        <span>Automation</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact">
+    <section id="contact" class="contact scroll-animate">
         <div class="container">
             <h2 class="section-title">Get in Touch</h2>
             <p class="section-description">
                 Interested in working together? Let's discuss how we can help bring your ideas to life.
             </p>
             <div class="contact-info">
-                <div class="contact-card">
-                    <h3>📧 Email</h3>
-                    <p><a href="mailto:contact@paiss.me">contact@paiss.me</a></p>
+                <div class="contact-card glass-card">
+                    <div class="contact-icon">📧</div>
+                    <h3>Email</h3>
+                    <p><a href="mailto:info@paiss.me">info@paiss.me</a></p>
                 </div>
-                <div class="contact-card">
-                    <h3>🌐 Website</h3>
-                    <p><a href="https://paiss.me">paiss.me</a></p>
-                </div>
-                <div class="contact-card">
-                    <h3>💼 GitHub</h3>
+                <div class="contact-card glass-card">
+                    <div class="contact-icon">💼</div>
+                    <h3>GitHub</h3>
                     <p><a href="https://github.com/duersjefen" target="_blank">@duersjefen</a></p>
+                </div>
+                <div class="contact-card glass-card">
+                    <div class="contact-icon">🌐</div>
+                    <h3>Website</h3>
+                    <p><a href="https://paiss.me">paiss.me</a></p>
                 </div>
             </div>
         </div>
@@ -149,9 +350,26 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2025 PAISS - Pragmatic AI Software Solutions. All rights reserved.</p>
-            <p class="footer-tagline">Building intelligent solutions, one line at a time.</p>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>PAISS</h3>
+                    <p>Pragmatic AI Software Solutions</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#tech">Tech</a>
+                    <a href="#services">Services</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PAISS. All rights reserved.</p>
+                <p class="footer-tagline">Building intelligent solutions, one line at a time.</p>
+            </div>
         </div>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
