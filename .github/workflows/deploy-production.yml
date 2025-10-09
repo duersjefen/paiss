@@ -81,6 +81,7 @@ jobs:
           echo "📝 Creating environment configuration..."
           cat > configs/paiss/.env.production << EOF
           # PAISS Production Environment
+          CONTAINER_NAME=paiss-web
           ENVIRONMENT=production
           IMAGE=ghcr.io/duersjefen/paiss:latest
           EOF

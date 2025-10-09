@@ -60,6 +60,7 @@ jobs:
           echo "📝 Creating environment configuration..."
           cat > configs/paiss/.env.staging << EOF
           # PAISS Staging Environment
+          CONTAINER_NAME=paiss-web-staging
           ENVIRONMENT=staging
           IMAGE=ghcr.io/duersjefen/paiss:latest
           EOF
