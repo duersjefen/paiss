@@ -1,16 +1,46 @@
+# =============================================================================
+# .gitignore - PAISS Static Website
+# =============================================================================
+
 # OS files
 .DS_Store
 Thumbs.db
+*~
 
-# Editor files
+# Editor / IDE
 .vscode/
 .idea/
+*.iml
 *.swp
 *.swo
 
 # Logs
 *.log
+logs/
 
-# Environment files (if any sensitive data)
+# Environment files (NEVER commit secrets!)
 .env
 .env.local
+.env.*.local
+*.pem
+*.key
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Temporary files
+*.tmp
+*.temp
+
+# Claude Code local settings
+.claude/
+.claude/settings.local.json
+
+# Build artifacts (if any)
+dist/
+build/
+
+# Backup files
+*.backup
+*.bak

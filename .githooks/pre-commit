@@ -1,0 +1,92 @@
+#!/bin/bash
+# =============================================================================
+# Git Pre-commit Hook - PAISS Static Site Quality Gate
+# =============================================================================
+# This runs automatically before every git commit to ensure code quality.
+# Install: git config core.hooksPath .githooks
+
+set -e
+
+echo "🔍 Running pre-commit quality checks..."
+
+# Check if there are any changes staged for commit
+if ! git diff --cached --quiet; then
+    echo "📋 Changes detected, running validation..."
+
+    # =========================================================================
+    # PREVENT COMMITTING SECRETS
+    # =========================================================================
+    echo "🔒 Checking for accidentally staged secrets..."
+
+    # Check for .env files (but allow .env.production and .env.staging)
+    if git diff --cached --name-only | grep -E '^\.env$|^\.env\.local$|^\.env\.development$' >/dev/null; then
+        echo "❌ You are trying to commit .env files with potential secrets!"
+        echo "   (.env, .env.local, .env.development)"
+        echo ""
+        echo "🔧 To fix:"
+        echo "   git reset HEAD .env .env.local .env.development"
+        echo ""
+        echo "💡 Note: .env.production and .env.staging are allowed (deployment configs)"
+        exit 1
+    fi
+
+    # Check for other common secret files
+    if git diff --cached --name-only | grep -qE '\.(pem|key)$'; then
+        echo "❌ You are trying to commit certificate/key files!"
+        echo "   These should never be committed."
+        echo ""
+        echo "🔧 To fix:"
+        echo "   git reset HEAD *.pem *.key"
+        exit 1
+    fi
+
+    echo "✅ No secrets detected"
+
+    # =========================================================================
+    # HTML VALIDATION (BASIC)
+    # =========================================================================
+    if git diff --cached --name-only | grep -qE '\.html$'; then
+        echo "🔍 Validating HTML files..."
+
+        # Check if index.html exists and is not empty
+        if [ -f "index.html" ]; then
+            if [ ! -s "index.html" ]; then
+                echo "❌ index.html is empty!"
+                exit 1
+            fi
+
+            # Basic sanity checks
+            if ! grep -q "<html" index.html; then
+                echo "⚠️  Warning: index.html doesn't appear to contain valid HTML structure"
+            fi
+
+            if ! grep -q "</html>" index.html; then
+                echo "⚠️  Warning: index.html doesn't appear to be properly closed"
+            fi
+        fi
+
+        echo "✅ HTML validation passed"
+    fi
+
+    # =========================================================================
+    # CSS VALIDATION (BASIC)
+    # =========================================================================
+    if git diff --cached --name-only | grep -qE '\.css$'; then
+        echo "🎨 Checking CSS files..."
+
+        # Check if styles.css exists and is not empty
+        if [ -f "styles.css" ]; then
+            if [ ! -s "styles.css" ]; then
+                echo "❌ styles.css is empty!"
+                exit 1
+            fi
+        fi
+
+        echo "✅ CSS validation passed"
+    fi
+
+else
+    echo "📋 No changes staged for commit"
+fi
+
+echo "✅ All quality checks passed - commit proceeding"
