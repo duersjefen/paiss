@@ -4,6 +4,17 @@ Static company website deployed via multi-tenant platform.
 
 ---
 
+## 🔗 PLATFORM INFRASTRUCTURE
+
+**This app is deployed on the multi-tenant platform.**
+
+For platform-level changes (nginx routing, SSL certificates, database, shared infrastructure):
+→ **See:** `/Users/martijn/Documents/Projects/multi-tenant-platform/CLAUDE.md`
+
+For app-specific development and deployment, see below.
+
+---
+
 ## 🎯 CORE PROJECT PRINCIPLES
 
 ### Development Workflow
