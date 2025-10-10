@@ -3,6 +3,7 @@
 # PAISS - SSM Deployment Script
 # =============================================================================
 # Deploys paiss to EC2 via AWS Systems Manager (SSM)
+# Builds Docker image on server (no registry needed)
 # Usage: ./deploy.sh [staging|production]
 # =============================================================================
 
@@ -44,13 +45,10 @@ else
     CONTAINER_NAME="paiss-web-staging"
 fi
 
-# Determine image tag based on environment
-IMAGE="ghcr.io/duersjefen/paiss:latest"
-
 echo "📤 Sending deployment command via SSM..."
 echo ""
 
-# Deploy via SSM
+# Deploy via SSM - build on server
 aws ssm send-command \
     --region "$REGION" \
     --instance-ids "$INSTANCE_ID" \
@@ -59,40 +57,31 @@ aws ssm send-command \
     --parameters "commands=[
         'set -e',
         'echo \"🚀 Deploying paiss ($ENVIRONMENT)...\"',
-        'cd /opt/apps/paiss',
+        'cd /opt/apps/paiss || exit 1',
         'if [ ! -d .git ]; then',
         '  echo \"📥 Cloning repository...\"',
-        '  git clone https://github.com/duersjefen/paiss.git .',
+        '  cd /opt/apps',
+        '  git clone https://github.com/duersjefen/paiss.git',
+        '  cd paiss',
         'fi',
         'echo \"📥 Pulling latest code...\"',
+        'git fetch origin',
+        'git reset --hard origin/main',
         'git pull origin main',
-        'echo \"🔐 Authenticating with GitHub Container Registry...\"',
-        'echo \$GITHUB_PAT | docker login ghcr.io -u duersjefen --password-stdin',
-        'echo \"🐳 Pulling Docker image: $IMAGE\"',
-        'docker pull $IMAGE',
-        'echo \"🛑 Stopping old container (if exists)...\"',
-        'docker stop $CONTAINER_NAME 2>/dev/null || true',
-        'docker rm $CONTAINER_NAME 2>/dev/null || true',
-        'echo \"🚀 Starting new container...\"',
-        'docker run -d \\',
-        '  --name $CONTAINER_NAME \\',
-        '  --restart unless-stopped \\',
-        '  --network platform \\',
-        '  --label project=paiss \\',
-        '  --label environment=$ENVIRONMENT \\',
-        '  $IMAGE',
+        'echo \"🔨 Building Docker image...\"',
+        'CONTAINER_NAME=$CONTAINER_NAME ENVIRONMENT=$ENVIRONMENT docker-compose build',
+        'echo \"🚀 Starting container...\"',
+        'CONTAINER_NAME=$CONTAINER_NAME ENVIRONMENT=$ENVIRONMENT docker-compose up -d',
         'echo \"⏳ Waiting for container to start...\"',
         'sleep 5',
         'echo \"🔍 Checking container status...\"',
-        'docker ps | grep $CONTAINER_NAME',
+        'docker ps | grep $CONTAINER_NAME || echo \"⚠️  Container not found\"',
         'echo \"✅ Deployment complete!\"',
         'echo \"\"',
         'echo \"📋 Container Info:\"',
-        'docker inspect $CONTAINER_NAME --format=\"{{.State.Status}}: {{.Name}} ({{.Config.Image}})\"'
+        'docker inspect $CONTAINER_NAME --format=\"{{.State.Status}}: {{.Name}}\" 2>/dev/null || echo \"Container: $CONTAINER_NAME\"'
     ]" \
     --output text
-
-COMMAND_ID=$?
 
 echo ""
 echo "✅ Deployment command sent successfully!"

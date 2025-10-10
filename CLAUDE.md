@@ -9,8 +9,8 @@ Static company website deployed via multi-tenant platform.
 ### Development Workflow
 1. **Edit HTML/CSS/JS** → Test locally with `make dev` (Vite dev server)
 2. **Commit changes** → `git add . && git commit -m "message"`
-3. **Push to GitHub** → `git push origin main` (triggers Docker image build)
-4. **Deploy** → `make deploy-staging` or `make deploy-production` (SSM deployment)
+3. **Push to GitHub** → `git push origin main` (optional, for backup)
+4. **Deploy** → `make deploy-staging` or `make deploy-production` (builds on server via SSM)
 
 ### Quick Reference
 ```bash
@@ -88,10 +88,10 @@ paiss/
 ```
 
 **How Deployment Works:**
-1. **Code Changes** → Pushed to `paiss` GitHub repo
-2. **GitHub Actions** → Builds Docker image and pushes to ghcr.io (automatic)
-3. **Deploy Command** → `make deploy-staging` or `make deploy-production` (manual)
-4. **SSM Execution** → Connects to EC2, pulls image, restarts container
+1. **Code Changes** → Pushed to `paiss` GitHub repo (for backup/version control)
+2. **Deploy Command** → `make deploy-staging` or `make deploy-production` (from local machine)
+3. **SSM Execution** → Connects to EC2, pulls code, builds Docker image, starts container
+4. **No Registry** → Builds fresh on server every time (2-5 min)
 
 **Container Networking:**
 - Joins the `platform` Docker network (external)
@@ -184,26 +184,31 @@ View application metrics at: https://monitoring.paiss.me
 # 2. Test locally with Vite dev server
 make dev  # Visit http://localhost:8002 (HMR enabled)
 
-# 3. Commit and push to trigger Docker image build
+# 3. Commit changes
 git add .
 git commit -m "Update landing page"
-git push origin main  # GitHub Actions builds Docker image
+git push origin main  # Optional: backup to GitHub
 
-# 4. Deploy to staging via SSM
+# 4. Deploy to staging via SSM (builds on server)
 make deploy-staging  # Deploys to https://staging.paiss.me
 
 # 5. Test staging
 curl https://staging.paiss.me
 
-# 6. Deploy to production via SSM
+# 6. Deploy to production via SSM (builds on server)
 make deploy-production  # Deploys to https://paiss.me
 ```
 
 ### How It Works
-1. **Push to GitHub** → Triggers `build-and-push.yml` workflow
-2. **GitHub Actions** → Builds Docker image and pushes to ghcr.io
-3. **Deploy Command** → Uses AWS SSM to deploy to EC2
-4. **SSM Executes** → Pulls image, stops old container, starts new container
+1. **Deploy Command** → `make deploy-staging` or `make deploy-production`
+2. **SSM Connection** → Connects to EC2 via AWS Systems Manager (no SSH)
+3. **Git Pull** → Pulls latest code from GitHub
+4. **Build** → Builds Docker image on server from Dockerfile
+5. **Deploy** → Starts container with appropriate name (staging/production)
+6. **Done** → Site updated in 2-5 minutes
+
+**No GitHub Actions** - Deployment happens directly from your machine via SSM
+**No Registry** - Builds fresh on server every time
 
 ---
 

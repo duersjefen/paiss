@@ -3,6 +3,8 @@ version: '3.8'
 # =============================================================================
 # PAISS - Company Website Deployment
 # =============================================================================
+# Builds from local Dockerfile and joins platform network
+# =============================================================================
 
 networks:
   platform:
@@ -14,7 +16,9 @@ services:
   # PAISS Web (Static Site)
   # ===========================================================================
   paiss-web:
-    image: ${IMAGE:-ghcr.io/duersjefen/paiss:latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: ${CONTAINER_NAME:-paiss-web}
     restart: unless-stopped
     networks:
@@ -32,4 +36,4 @@ services:
         max-file: "3"
     labels:
       - "project=paiss"
-      - "environment=production"
+      - "environment=${ENVIRONMENT:-production}"
