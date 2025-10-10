@@ -7,14 +7,16 @@ Static company website deployed via multi-tenant platform.
 ## 🎯 CORE PROJECT PRINCIPLES
 
 ### Development Workflow
-1. **Edit HTML/CSS** → Test locally with `make dev`
+1. **Edit HTML/CSS/JS** → Test locally with `make dev` (Vite dev server)
 2. **Commit changes** → `git add . && git commit -m "message"`
-3. **Deploy** → `make deploy-staging` (auto) or `make deploy-production` (manual approval)
+3. **Push to GitHub** → `git push origin main` (triggers Docker image build)
+4. **Deploy** → `make deploy-staging` or `make deploy-production` (SSM deployment)
 
 ### Quick Reference
 ```bash
 # Development
-make dev                   # Start local server (http://localhost:8002)
+make dev                   # Start Vite dev server (http://localhost:8002)
+make build-local           # Build project with Vite
 make build                 # Build Docker image locally
 make run                   # Run Docker container locally
 
@@ -24,7 +26,7 @@ make deploy-production     # Deploy to production (requires manual approval)
 make status                # Check deployment status
 
 # URLs
-# Local:      http://localhost:8002 (dev server)
+# Local:      http://localhost:8002 (Vite dev server)
 # Staging:    https://staging.paiss.me
 # Production: https://paiss.me
 ```
@@ -37,7 +39,10 @@ make status                # Check deployment status
 paiss/
 ├── index.html              # Main landing page
 ├── styles.css              # Styling
-├── Dockerfile              # Container configuration
+├── script.js               # JavaScript animations
+├── vite.config.js          # Vite configuration
+├── package.json            # Node dependencies
+├── Dockerfile              # Container configuration (multi-stage build)
 ├── nginx.conf              # Nginx server config (in container)
 ├── docker-compose.yml      # Deployment orchestration
 ├── .env.production         # Production environment
@@ -52,11 +57,13 @@ paiss/
 ## 🚢 INFRASTRUCTURE
 
 ### Local Development
-- **Server:** Python's http.server on `localhost:8002`
-- **Files:** Static HTML/CSS (no build step needed)
+- **Server:** Vite dev server on `localhost:8002`
+- **Build Tool:** Vite (Hot Module Replacement, fast refresh)
+- **Files:** HTML/CSS/JS with ES modules
 
 ### Production Stack
-- **Container:** Nginx (Alpine Linux)
+- **Build:** Multi-stage Docker build (Node + Vite → Nginx)
+- **Container:** Nginx (Alpine Linux) serving optimized static assets
 - **Port:** 80 (internal), mapped via platform nginx
 - **Domain:** https://paiss.me
 - **Staging:** https://staging.paiss.me
@@ -68,38 +75,37 @@ paiss/
 **Repository Structure:**
 ```
 ~/Documents/Projects/
-├── paiss/                        # This repository (application code)
+├── paiss/                        # This repository (application code + deployment)
 │   ├── index.html                # Website content
 │   ├── styles.css                # Styling
 │   ├── Dockerfile                # Container image
-│   ├── docker-compose.yml        # Local deployment config
+│   ├── deploy.sh                 # SSM deployment script
+│   ├── .env.ec2                  # EC2 instance ID (gitignored)
 │   └── CLAUDE.md                 # This file
-└── multi-tenant-platform/        # Platform repository (deployment configs)
-    └── configs/paiss/            # paiss deployment configuration
-        ├── docker-compose.yml    # Container orchestration
-        ├── .env.staging          # Staging environment variables
-        └── .env.production       # Production environment variables
+└── multi-tenant-platform/        # Platform repository (shared infrastructure)
+    └── platform/nginx/sites/     # Nginx configuration
+        └── paiss.conf            # paiss routing config
 ```
 
 **How Deployment Works:**
 1. **Code Changes** → Pushed to `paiss` GitHub repo
-2. **GitHub Actions** → Builds Docker images and pushes to ghcr.io
-3. **Deployment Script** → Pulls configs from `multi-tenant-platform` repo
-4. **Docker Compose** → Orchestrates container deployment on EC2
+2. **GitHub Actions** → Builds Docker image and pushes to ghcr.io (automatic)
+3. **Deploy Command** → `make deploy-staging` or `make deploy-production` (manual)
+4. **SSM Execution** → Connects to EC2, pulls image, restarts container
 
 **Container Networking:**
-- Joins the `platform` Docker network
-- Platform nginx proxies traffic to `paiss-web:80` container
-- Health check endpoint: `/health`
+- Joins the `platform` Docker network (external)
+- Platform nginx proxies traffic to `paiss-web:80` (production) or `paiss-web-staging:80` (staging)
+- No health check needed for static site
 
 **Environment Variables:**
-- Configured via `.env.{environment}` files in platform repo
-- Includes `IMAGE` and `CONTAINER_NAME`
+- EC2 instance ID in `.env.ec2` (local only, gitignored)
+- No sensitive data in paiss repository
 
-**Key Files to Update:**
-- Website content: `paiss` repository (`index.html`, `styles.css`)
-- Deployment config: `multi-tenant-platform/configs/paiss/`
-- Never commit environment secrets to `paiss` repo
+**Key Files:**
+- Website content: `index.html`, `styles.css`, `script.js`
+- Deployment: `deploy.sh`, `Makefile`
+- Platform nginx: `../multi-tenant-platform/platform/nginx/sites/paiss.conf`
 
 ---
 
@@ -117,13 +123,15 @@ paiss/
 ## 📋 DEVELOPMENT RULES
 
 **✅ ALWAYS:**
-- Use Makefile commands (`make dev`, not manual python commands)
-- Test locally before deploying
+- Use Makefile commands (`make dev`, not manual npm/vite commands)
+- Test locally before deploying (Vite dev server with HMR)
 - Keep HTML semantic and accessible
 - Ensure mobile-responsive design
 - Maintain brand consistency
+- Use ES modules for JavaScript
 
 **❌ NEVER:**
+- Commit `node_modules/` or `dist/` directories
 - Commit `.env` files with secrets
 - Use inline styles (use `styles.css`)
 - Break mobile responsiveness
@@ -165,30 +173,37 @@ View application metrics at: https://monitoring.paiss.me
 
 ## 🚀 DEPLOYMENT WORKFLOW
 
-### Staging Deployment (Automatic)
-```bash
-# 1. Make changes to HTML/CSS
-# 2. Test locally
-make dev  # Visit http://localhost:8002
+### Prerequisites
+1. **EC2 Instance**: Amazon Linux 2023 in eu-north-1
+2. **AWS CLI**: Configured with SSM permissions
+3. **Instance ID**: Set in `.env.ec2` (copy from `.env.ec2.example`)
 
-# 3. Commit and push to trigger deployment
+### Deployment Process
+```bash
+# 1. Make changes to HTML/CSS/JS
+# 2. Test locally with Vite dev server
+make dev  # Visit http://localhost:8002 (HMR enabled)
+
+# 3. Commit and push to trigger Docker image build
 git add .
 git commit -m "Update landing page"
-make deploy-staging
+git push origin main  # GitHub Actions builds Docker image
 
-# 4. Test staging site
-# Visit: https://staging.paiss.me
+# 4. Deploy to staging via SSM
+make deploy-staging  # Deploys to https://staging.paiss.me
+
+# 5. Test staging
+curl https://staging.paiss.me
+
+# 6. Deploy to production via SSM
+make deploy-production  # Deploys to https://paiss.me
 ```
 
-### Production Deployment (Manual Approval)
-```bash
-# After staging is validated:
-cd ../multi-tenant-platform
-make approve-production project=paiss
-
-# Or approve via GitHub UI:
-# https://github.com/duersjefen/multi-tenant-platform/actions
-```
+### How It Works
+1. **Push to GitHub** → Triggers `build-and-push.yml` workflow
+2. **GitHub Actions** → Builds Docker image and pushes to ghcr.io
+3. **Deploy Command** → Uses AWS SSM to deploy to EC2
+4. **SSM Executes** → Pulls image, stops old container, starts new container
 
 ---
 

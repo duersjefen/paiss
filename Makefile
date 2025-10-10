@@ -4,7 +4,7 @@
 # Simple static site development and deployment workflow
 # =============================================================================
 
-.PHONY: help dev build deploy-staging deploy-production status clean
+.PHONY: help dev build stop deploy-staging deploy-production status clean
 
 .DEFAULT_GOAL := help
 
@@ -13,11 +13,16 @@
 ##
 
 dev: ## Start local development server
-	@echo "🚀 Starting local development server..."
+	@echo "🚀 Starting Vite development server..."
 	@echo "📍 http://localhost:8002"
 	@echo ""
 	@echo "💡 Press Ctrl+C to stop"
-	@python3 -m http.server 8002
+	@npm run dev
+
+build-local: ## Build project locally with Vite
+	@echo "⚡ Building project with Vite..."
+	@npm run build
+	@echo "✅ Build complete: dist/"
 
 build: ## Build Docker image locally
 	@echo "🐳 Building Docker image..."
@@ -33,53 +38,22 @@ run: ## Run Docker container locally
 	@echo ""
 	@docker run --rm -p 8080:80 --name paiss-local paiss:local
 
+stop: ## Stop development server
+	@echo "🛑 Stopping services..."
+	@-lsof -ti:8002 | xargs kill -9 2>/dev/null || true
+	@echo "✅ All services stopped"
+
 ##
 ## 🚀 Deployment Commands (Platform-Driven)
 ##
 
-deploy-staging: ## Deploy to staging (triggers continuous deployment pipeline)
-	@echo "🎭 Continuous Deployment Pipeline Starting..."
-	@echo ""
-	@echo "📋 Checking git status..."
-	@if [ -n "$$(git status --porcelain)" ]; then \
-		echo "⚠️  You have uncommitted changes. Commit first:"; \
-		echo "   git add . && git commit -m 'Your message'"; \
-		exit 1; \
-	fi
-	@echo "📤 Pushing to main (triggers continuous deployment)..."
-	@git push origin main
-	@echo ""
-	@echo "🔄 Continuous Deployment Pipeline:"
-	@echo "  1. Build Docker image (paiss repo) ⏳"
-	@echo "  2. Notify platform repo ⏳"
-	@echo "  3. Deploy to staging ⏳"
-	@echo "  4. Auto-queue production ⏸️  (requires approval)"
-	@echo ""
-	@echo "👀 Monitor build:  https://github.com/duersjefen/paiss/actions"
-	@echo "👀 Monitor deploy: https://github.com/duersjefen/multi-tenant-platform/actions"
-	@echo ""
-	@echo "🔍 Test staging: https://staging.paiss.me"
-	@echo ""
-	@echo "✅ When staging looks good, approve production:"
-	@echo "   cd ../multi-tenant-platform"
-	@echo "   make approve-production project=paiss"
+deploy-staging: ## Deploy to staging via SSM
+	@echo "🚀 Deploying to staging..."
+	@./deploy.sh staging
 
-deploy-production: ## Approve pending production deployment
-	@echo "🚀 Production Deployment Approval"
-	@echo ""
-	@echo "ℹ️  Production auto-queues after staging succeeds"
-	@echo ""
-	@echo "📖 To approve production deployment:"
-	@echo "  1. Test staging: https://staging.paiss.me"
-	@echo "  2. Approve deployment:"
-	@echo "     cd ../multi-tenant-platform"
-	@echo "     make approve-production project=paiss"
-	@echo ""
-	@echo "Or approve via GitHub UI:"
-	@echo "  https://github.com/duersjefen/multi-tenant-platform/actions"
-	@echo "  → Click 'Review deployments' → Approve 'production'"
-	@echo ""
-	@exit 1
+deploy-production: ## Deploy to production via SSM
+	@echo "🚀 Deploying to production..."
+	@./deploy.sh production
 
 status: ## Check deployment status
 	@echo "📊 Recent deployments:"
@@ -92,6 +66,7 @@ status: ## Check deployment status
 
 clean: ## Clean build artifacts
 	@echo "🧹 Cleaning up..."
+	@rm -rf dist node_modules
 	@docker rmi paiss:local 2>/dev/null || true
 	@echo "✅ Cleanup complete"
 

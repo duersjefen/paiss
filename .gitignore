@@ -22,6 +22,7 @@ logs/
 .env
 .env.local
 .env.*.local
+.env.ec2
 *.pem
 *.key
 
@@ -40,6 +41,9 @@ docker-compose.override.yml
 # Build artifacts (if any)
 dist/
 build/
+
+# Node dependencies
+node_modules/
 
 # Backup files
 *.backup

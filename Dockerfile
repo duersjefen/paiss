@@ -1,14 +1,35 @@
 # =============================================================================
 # PAISS Landing Page - Production Dockerfile
 # =============================================================================
-# Serves static HTML/CSS/JS with nginx
+# Multi-stage build: Build with Vite, serve with nginx
 # =============================================================================
 
+# -----------------------------------------------------------------------------
+# Stage 1: Build
+# -----------------------------------------------------------------------------
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy source files
+COPY . .
+
+# Build with Vite
+RUN npm run build
+
+# -----------------------------------------------------------------------------
+# Stage 2: Production
+# -----------------------------------------------------------------------------
 FROM nginx:alpine
 
-# Copy website files
-COPY index.html /usr/share/nginx/html/
-COPY styles.css /usr/share/nginx/html/
+# Copy built files from builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html/
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
