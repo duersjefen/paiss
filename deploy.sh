@@ -1,20 +1,13 @@
 #!/bin/bash
-# =============================================================================
-# PAISS - SSM Deployment Script
-# =============================================================================
-# Deploys paiss to EC2 via AWS Systems Manager (SSM)
-# Builds Docker image on server (no registry needed)
-# Usage: ./deploy.sh [staging|production]
-# =============================================================================
-
 set -e
 
 ENVIRONMENT="${1:-staging}"
 REGION="eu-north-1"
 
-# Load EC2 instance ID from .env file
-if [ -f ".env.ec2" ]; then
-    source .env.ec2
+# Load EC2 instance ID from shared platform config
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$SCRIPT_DIR/../.env.ec2" ]; then
+    source "$SCRIPT_DIR/../.env.ec2"
 fi
 
 INSTANCE_ID="${EC2_INSTANCE_ID}"
@@ -32,23 +25,12 @@ if [ -z "$INSTANCE_ID" ]; then
     exit 1
 fi
 
-echo "🚀 Deploying PAISS to $ENVIRONMENT"
-echo "===================================="
+echo "🚀 Deploying paiss to $ENVIRONMENT"
 echo "Instance: $INSTANCE_ID"
 echo "Region: $REGION"
 echo ""
 
-# Determine container name based on environment
-if [ "$ENVIRONMENT" = "production" ]; then
-    CONTAINER_NAME="paiss-web"
-else
-    CONTAINER_NAME="paiss-web-staging"
-fi
-
-echo "📤 Sending deployment command via SSM..."
-echo ""
-
-# Deploy via SSM - build on server
+# Deploy via SSM with compose project isolation
 aws ssm send-command \
     --region "$REGION" \
     --instance-ids "$INSTANCE_ID" \
@@ -56,46 +38,47 @@ aws ssm send-command \
     --comment "Deploy paiss $ENVIRONMENT" \
     --parameters "commands=[
         'set -e',
-        'echo \"🚀 Deploying paiss ($ENVIRONMENT)...\"',
+        'PROJECT_NAME=paiss-$ENVIRONMENT',
+        'echo \"🚀 Deploying paiss to $ENVIRONMENT\"',
+        'echo \"Project: \$PROJECT_NAME\"',
         'cd /opt/apps/paiss || exit 1',
         'if [ ! -d .git ]; then',
-        '  echo \"📥 Cloning repository...\"',
         '  cd /opt/apps',
         '  git clone https://github.com/duersjefen/paiss.git',
         '  cd paiss',
         'fi',
-        'echo \"📥 Pulling latest code...\"',
         'git fetch origin',
         'git reset --hard origin/main',
-        'git pull origin main',
-        'echo \"🔨 Building Docker image...\"',
-        'CONTAINER_NAME=$CONTAINER_NAME ENVIRONMENT=$ENVIRONMENT docker-compose build',
-        'echo \"🚀 Starting container...\"',
-        'CONTAINER_NAME=$CONTAINER_NAME ENVIRONMENT=$ENVIRONMENT docker-compose up -d',
-        'echo \"⏳ Waiting for container to start...\"',
-        'sleep 5',
-        'echo \"🔍 Checking container status...\"',
-        'docker ps | grep $CONTAINER_NAME || echo \"⚠️  Container not found\"',
-        'echo \"✅ Deployment complete!\"',
-        'echo \"\"',
-        'echo \"📋 Container Info:\"',
-        'docker inspect $CONTAINER_NAME --format=\"{{.State.Status}}: {{.Name}}\" 2>/dev/null || echo \"Container: $CONTAINER_NAME\"'
+        'export DOCKER_BUILDKIT=1',
+        'docker-compose -p \$PROJECT_NAME up -d --build',
+        'echo \"✅ $ENVIRONMENT is live!\"'
     ]" \
     --output text
 
 echo ""
-echo "✅ Deployment command sent successfully!"
-echo ""
-echo "📋 Monitor deployment:"
-echo "  aws ssm list-command-invocations --region $REGION --instance-id $INSTANCE_ID --details | head -50"
-echo ""
-echo "Or connect interactively:"
-echo "  aws ssm start-session --target $INSTANCE_ID --region $REGION"
-echo ""
-echo "🔍 Test deployment:"
+echo "✅ Deployment command sent!"
+echo "⏳ Waiting for deployment to complete (60s)..."
+sleep 60
+
+# Health check
+echo "🔍 Checking health..."
 if [ "$ENVIRONMENT" = "production" ]; then
-    echo "  curl https://paiss.me"
+    HEALTH_URL="https://paiss.me"
 else
-    echo "  curl https://staging.paiss.me"
+    HEALTH_URL="https://staging.paiss.me"
+fi
+
+if curl -f -s "$HEALTH_URL" > /dev/null 2>&1; then
+    echo "✅ Deployment successful!"
+    echo ""
+    if [ "$ENVIRONMENT" = "production" ]; then
+        echo "🌐 https://paiss.me"
+    else
+        echo "🌐 https://staging.paiss.me"
+    fi
+else
+    echo "❌ Health check failed"
+    echo "🔍 Debug with: make logs-$ENVIRONMENT"
+    exit 1
 fi
 echo ""
