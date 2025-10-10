@@ -31,7 +31,7 @@ echo "Region: $REGION"
 echo ""
 
 # Deploy via SSM with compose project isolation
-aws ssm send-command \
+COMMAND_ID=$(aws ssm send-command \
     --region "$REGION" \
     --instance-ids "$INSTANCE_ID" \
     --document-name "AWS-RunShellScript" \
@@ -53,12 +53,21 @@ aws ssm send-command \
         'docker-compose -p \$PROJECT_NAME up -d --build',
         'echo \"✅ $ENVIRONMENT is live!\"'
     ]" \
-    --output text
+    --output text \
+    --query 'Command.CommandId')
 
 echo ""
 echo "✅ Deployment command sent!"
-echo "⏳ Waiting for deployment to complete (60s)..."
-sleep 60
+echo "Command ID: $COMMAND_ID"
+echo "⏳ Waiting for deployment to complete..."
+
+# Wait for command to finish (no arbitrary timeout)
+aws ssm wait command-executed \
+    --region "$REGION" \
+    --command-id "$COMMAND_ID" \
+    --instance-id "$INSTANCE_ID"
+
+echo "✅ Deployment finished!"
 
 # Health check
 echo "🔍 Checking health..."
