@@ -4,24 +4,19 @@ Static company website deployed via multi-tenant platform.
 
 ---
 
-## 🔗 PLATFORM INFRASTRUCTURE
+## 🔗 DOCUMENTATION HIERARCHY
 
-**This app is deployed on the multi-tenant platform.**
+**Global principles (debugging, notifications, professional guidance):**
+→ `/Users/martijn/Documents/Projects/CLAUDE.md`
 
-For platform-level changes (nginx routing, SSL certificates, database, shared infrastructure):
-→ **See:** `/Users/martijn/Documents/Projects/multi-tenant-platform/CLAUDE.md`
+**Platform infrastructure (nginx, SSL, deployment):**
+→ `/Users/martijn/Documents/Projects/multi-tenant-platform/CLAUDE.md`
 
-For app-specific development and deployment, see below.
+**This file:** PAISS specific configuration and deployment details only.
 
 ---
 
-## 🎯 CORE PROJECT PRINCIPLES
-
-### Development Workflow
-1. **Edit HTML/CSS/JS** → Test locally with `make dev` (Vite dev server)
-2. **Commit changes** → `git add . && git commit -m "message"`
-3. **Push to GitHub** → `git push origin main` (optional, for backup)
-4. **Deploy** → `make deploy-staging` or `make deploy-production` (builds on server via SSM)
+## ⚙️ PAISS CONFIGURATION
 
 ### Quick Reference
 ```bash
@@ -128,60 +123,6 @@ paiss/
 - **Secondary Color:** Purple (#8b5cf6)
 - **Accent Color:** Cyan (#06b6d4)
 - **Font:** Inter
-
----
-
-## 📋 DEVELOPMENT RULES
-
-**✅ ALWAYS:**
-- Use Makefile commands (`make dev`, not manual npm/vite commands)
-- Test locally before deploying (Vite dev server with HMR)
-- Keep HTML semantic and accessible
-- Ensure mobile-responsive design
-- Maintain brand consistency
-- Use ES modules for JavaScript
-
-**❌ NEVER:**
-- Commit `node_modules/` or `dist/` directories
-- Commit `.env` files with secrets
-- Use inline styles (use `styles.css`)
-- Break mobile responsiveness
-- Remove accessibility features
-
----
-
-## 🔧 CRITICAL BEHAVIORS
-
-### User Notification System
-**Notify user when Claude finishes or needs input:**
-```bash
-~/bin/claude-notify "message" "type"
-```
-
-**Types:** `success`, `task_complete`, `milestone`, `error`, `question`, `approval_needed`
-
-**When to notify:**
-- ✅ All tasks complete - nothing left to do
-- ✅ Waiting for input - need decision/approval/clarification
-- ✅ Blocked/error - can't proceed without help
-- ❌ Don't notify on routine mid-task updates
-
-### Professional Guidance
-**Must challenge:** Security issues, accessibility problems, poor UX
-**Template:** *"This approach will cause [problems] because [reasons]. Instead, [better solution] which [benefits]."*
-
-### Parallel Agent Orchestration
-**For complex tasks, use 4 agents in parallel (Task tool):**
-1. **Research** - Analyze existing patterns (Read, Grep, Glob)
-2. **Frontend** - HTML/CSS/JS implementation
-3. **UX/Accessibility** - Responsive design, a11y validation
-4. **Performance** - Bundle size, load time optimization
-
-**Trigger:** User says "ultrathink" or requests comprehensive implementation
-
-**Workflow:** Spawn all 4 agents → run in parallel → synthesize results → present unified plan
-
-**Speed:** 60% faster than sequential for complex features
 
 ---
 
