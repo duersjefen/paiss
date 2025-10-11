@@ -170,6 +170,19 @@ paiss/
 **Must challenge:** Security issues, accessibility problems, poor UX
 **Template:** *"This approach will cause [problems] because [reasons]. Instead, [better solution] which [benefits]."*
 
+### Parallel Agent Orchestration
+**For complex tasks, use 4 agents in parallel (Task tool):**
+1. **Research** - Analyze existing patterns (Read, Grep, Glob)
+2. **Frontend** - HTML/CSS/JS implementation
+3. **UX/Accessibility** - Responsive design, a11y validation
+4. **Performance** - Bundle size, load time optimization
+
+**Trigger:** User says "ultrathink" or requests comprehensive implementation
+
+**Workflow:** Spawn all 4 agents → run in parallel → synthesize results → present unified plan
+
+**Speed:** 60% faster than sequential for complex features
+
 ---
 
 ## 📊 MONITORING
