@@ -546,15 +546,38 @@ AI role:       Implementation, optimization
 
                     <!-- Project Type -->
                     <div class="form-group">
-                        <label for="project-type">Project Type</label>
-                        <select id="project-type" name="project-type">
-                            <option value="">Select a type (optional)</option>
-                            <option value="website">Website / Landing Page</option>
-                            <option value="automation">Process Automation</option>
-                            <option value="integration">API Integration</option>
-                            <option value="data">Data Processing</option>
-                            <option value="other">Other</option>
-                        </select>
+                        <label>Project Type <span style="font-weight: 400; color: var(--text-lighter); font-size: 14px;">(tap to select)</span></label>
+                        <div class="chip-group">
+                            <input type="checkbox" id="chip-website" name="project-type" value="website" class="chip-input">
+                            <label for="chip-website" class="chip">
+                                <span class="chip-icon">🌐</span>
+                                <span class="chip-text">Website</span>
+                            </label>
+
+                            <input type="checkbox" id="chip-automation" name="project-type" value="automation" class="chip-input">
+                            <label for="chip-automation" class="chip">
+                                <span class="chip-icon">⚙️</span>
+                                <span class="chip-text">Automation</span>
+                            </label>
+
+                            <input type="checkbox" id="chip-integration" name="project-type" value="integration" class="chip-input">
+                            <label for="chip-integration" class="chip">
+                                <span class="chip-icon">🔗</span>
+                                <span class="chip-text">Integration</span>
+                            </label>
+
+                            <input type="checkbox" id="chip-ai" name="project-type" value="ai" class="chip-input">
+                            <label for="chip-ai" class="chip">
+                                <span class="chip-icon">🤖</span>
+                                <span class="chip-text">AI Project</span>
+                            </label>
+
+                            <input type="checkbox" id="chip-other" name="project-type" value="other" class="chip-input">
+                            <label for="chip-other" class="chip">
+                                <span class="chip-icon">💡</span>
+                                <span class="chip-text">Other</span>
+                            </label>
+                        </div>
                     </div>
 
                     <!-- Message Field -->

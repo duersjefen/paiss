@@ -17,14 +17,14 @@
 ## 🚀 Development
 
 ```bash
-# Serve locally
-python3 -m http.server 8000
+# Start Vite dev server (recommended)
+make dev
 
-# Or use any static server
-npx serve .
+# Or build locally
+make build-local
 ```
 
-Visit: http://localhost:8000
+Visit: http://localhost:8002
 
 ## 📦 Docker
 

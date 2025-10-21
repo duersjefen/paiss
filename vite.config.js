@@ -5,7 +5,7 @@ export default defineConfig({
   root: '.',
   publicDir: 'public',
   server: {
-    port: 8000,
+    port: 8002,
     host: true,
     open: true
   },

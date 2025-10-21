@@ -21,7 +21,7 @@ Static company website deployed via multi-tenant platform.
 ### Quick Reference
 ```bash
 # Development
-make dev                   # Start Vite dev server (http://localhost:8000)
+make dev                   # Start Vite dev server (http://localhost:8002)
 make build-local           # Build project with Vite
 make build                 # Build Docker image locally
 make run                   # Run Docker container locally
@@ -32,7 +32,7 @@ make deploy-production     # Deploy to production (requires manual approval)
 make status                # Check deployment status
 
 # URLs
-# Local:      http://localhost:8000 (Vite dev server)
+# Local:      http://localhost:8002 (Vite dev server)
 # Staging:    https://staging.paiss.me
 # Production: https://paiss.me
 

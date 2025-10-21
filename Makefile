@@ -14,7 +14,7 @@
 
 dev: ## Start local development server
 	@echo "🚀 Starting Vite development server..."
-	@echo "📍 http://localhost:8000"
+	@echo "📍 http://localhost:8002"
 	@echo ""
 	@echo "💡 Press Ctrl+C to stop"
 	@npm run dev
@@ -40,7 +40,7 @@ run: ## Run Docker container locally
 
 stop: ## Stop development server
 	@echo "🛑 Stopping services..."
-	@-lsof -ti:8000 | xargs kill -9 2>/dev/null || true
+	@-lsof -ti:8002 | xargs kill -9 2>/dev/null || true
 	@echo "✅ All services stopped"
 
 ##
