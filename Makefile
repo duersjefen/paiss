@@ -4,7 +4,7 @@
 # Simple static site development and deployment workflow
 # =============================================================================
 
-.PHONY: help dev build stop deploy-staging deploy-production status clean
+.PHONY: help dev build stop deploy deploy-staging deploy-production status clean
 
 .DEFAULT_GOAL := help
 
@@ -44,16 +44,31 @@ stop: ## Stop development server
 	@echo "✅ All services stopped"
 
 ##
-## 🚀 Deployment Commands (Platform-Driven)
+## 🚀 Deployment Commands (SSM-Based)
 ##
 
-deploy-staging: ## Deploy to staging via SSM
-	@echo "🚀 Deploying to staging..."
-	@./deploy.sh staging
+deploy-staging: ## Deploy to staging via SSM (builds on server)
+	@$(MAKE) deploy ENV=staging
 
-deploy-production: ## Deploy to production via SSM
-	@echo "🚀 Deploying to production..."
-	@./deploy.sh production
+deploy-production: ## Deploy to production via SSM (builds on server)
+	@$(MAKE) deploy ENV=production
+
+deploy: ## Internal: Test, push, then deploy (use SKIP_TESTS=1 or SKIP_PUSH=1 to skip)
+ifndef SKIP_TESTS
+	@echo "🧪 Running pre-deployment checks..."
+	@echo ""
+	@echo "1️⃣  Testing frontend build (catches build errors)..."
+	@$(MAKE) build-local
+	@echo ""
+	@echo "✅ All pre-deployment checks passed!"
+	@echo ""
+endif
+ifndef SKIP_PUSH
+	@echo "📤 Pushing to GitHub..."
+	@git push origin main || (echo "❌ Push failed. Use SKIP_PUSH=1 to deploy without pushing." && exit 1)
+	@echo ""
+endif
+	@./deploy.sh $(ENV)
 
 status: ## Check deployment status
 	@echo "📊 Recent deployments:"
