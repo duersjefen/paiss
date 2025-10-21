@@ -157,7 +157,7 @@ function initSmoothScroll() {
 
                 // Focus contact form if scrolling to contact section
                 if (href === '#contact-form') {
-                    // Wait for smooth scroll to complete, then add zoom animation
+                    // Wait for smooth scroll to FULLY complete, THEN zoom
                     setTimeout(() => {
                         const contactForm = document.querySelector('.contact-form');
                         if (contactForm) {
@@ -168,7 +168,7 @@ function initSmoothScroll() {
                                 contactForm.classList.remove('form-zoom-in');
                             }, 700);
                         }
-                    }, 400); // Wait for scroll to mostly complete
+                    }, 800); // Wait for full scroll completion
 
                     // Focus input after scroll + zoom animation
                     setTimeout(() => {
@@ -176,7 +176,7 @@ function initSmoothScroll() {
                         if (nameInput) {
                             nameInput.focus();
                         }
-                    }, 1100); // Wait for scroll + zoom to complete
+                    }, 1500); // Wait for scroll + zoom to complete
                 }
             }
         });
@@ -189,8 +189,17 @@ function initSmoothScroll() {
 function initMobileMenu() {
     const menuToggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
+    const headerCta = document.querySelector('.header-cta');
 
     if (!menuToggle || !navLinks) return;
+
+    const closeMenu = () => {
+        navLinks.classList.remove('mobile-open');
+        const spans = menuToggle.querySelectorAll('span');
+        spans[0].style.transform = '';
+        spans[1].style.opacity = '';
+        spans[2].style.transform = '';
+    };
 
     menuToggle.addEventListener('click', () => {
         navLinks.classList.toggle('mobile-open');
@@ -210,23 +219,22 @@ function initMobileMenu() {
 
     // Close menu when clicking on a link
     navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.classList.remove('mobile-open');
-            const spans = menuToggle.querySelectorAll('span');
-            spans[0].style.transform = '';
-            spans[1].style.opacity = '';
-            spans[2].style.transform = '';
-        });
+        link.addEventListener('click', closeMenu);
     });
+
+    // Close menu when clicking on header CTA
+    if (headerCta) {
+        headerCta.addEventListener('click', closeMenu);
+    }
 
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
-        if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
-            navLinks.classList.remove('mobile-open');
-            const spans = menuToggle.querySelectorAll('span');
-            spans[0].style.transform = '';
-            spans[1].style.opacity = '';
-            spans[2].style.transform = '';
+        const isClickInside = navLinks.contains(e.target) ||
+                              menuToggle.contains(e.target) ||
+                              (headerCta && headerCta.contains(e.target));
+
+        if (!isClickInside) {
+            closeMenu();
         }
     });
 }
