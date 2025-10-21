@@ -101,7 +101,7 @@ paiss/
 
 **Container Networking:**
 - Joins the `platform` Docker network (external)
-- Platform nginx proxies traffic to `paiss-web:80` (production) or `paiss-web-staging:80` (staging)
+- Platform nginx proxies traffic to `paiss-production:80` or `paiss-staging:80`
 - No health check needed for static site
 
 **Environment Variables:**
