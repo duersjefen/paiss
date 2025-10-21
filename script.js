@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollProgress();
     initFloatingCTA();
     initParallaxHero();
-    initCustomCursor();
+    // initCustomCursor(); // Disabled - too distracting for business site
     initSectionNav();
     initTextReveal();
     initHeaderScroll();
@@ -157,16 +157,18 @@ function initSmoothScroll() {
 
                 // Focus contact form if scrolling to contact section
                 if (href === '#contact-form') {
-                    // Add zoom animation class
-                    const contactForm = document.querySelector('.contact-form');
-                    if (contactForm) {
-                        contactForm.classList.add('form-zoom-in');
+                    // Wait for smooth scroll to complete, then add zoom animation
+                    setTimeout(() => {
+                        const contactForm = document.querySelector('.contact-form');
+                        if (contactForm) {
+                            contactForm.classList.add('form-zoom-in');
 
-                        // Remove class after animation completes
-                        setTimeout(() => {
-                            contactForm.classList.remove('form-zoom-in');
-                        }, 600);
-                    }
+                            // Remove class after animation completes
+                            setTimeout(() => {
+                                contactForm.classList.remove('form-zoom-in');
+                            }, 700);
+                        }
+                    }, 400); // Wait for scroll to mostly complete
 
                     // Focus input after scroll + zoom animation
                     setTimeout(() => {
@@ -174,7 +176,7 @@ function initSmoothScroll() {
                         if (nameInput) {
                             nameInput.focus();
                         }
-                    }, 800); // Wait for smooth scroll to complete
+                    }, 1100); // Wait for scroll + zoom to complete
                 }
             }
         });
