@@ -338,31 +338,22 @@ nav {
 }
 
 .logo h1 {
-    font-size: 28px;
-    font-weight: 900;
-    background: var(--gradient-text);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     margin: 0;
-    letter-spacing: -0.5px;
-    position: relative;
+    display: flex;
+    align-items: center;
+    line-height: 1;
 }
 
-.logo h1::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 3px;
-    background: var(--gradient-accent);
-    transition: width 0.3s ease;
-    border-radius: 2px;
+.logo h1 svg {
+    display: block;
+    height: 32px;
+    width: auto;
+    transition: transform 0.2s ease;
 }
 
-.logo:hover h1::after {
-    width: 100%;
+.logo:hover h1 svg {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
 }
 
 .logo .tagline {

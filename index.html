@@ -73,7 +73,8 @@ AI role:       Implementation, optimization
         <nav>
             <div class="logo">
                 <h1>
-                    <svg width="118" height="32" viewBox="0 0 118 32" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;">
+                    <svg width="118" height="32" viewBox="0 0 118 32" xmlns="http://www.w3.org/2000/svg"
+                         shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
                         <defs>
                             <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                 <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
@@ -83,7 +84,8 @@ AI role:       Implementation, optimization
                         <text x="0" y="26" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
                               font-size="32" font-weight="900" letter-spacing="-0.5" fill="url(#logoGradient)">PA</text>
                         <path d="M 50 4 L 42 16 L 47 16 L 45 28 L 55 15 L 50 15 Z"
-                              fill="url(#logoGradient)"/>
+                              fill="url(#logoGradient)"
+                              shape-rendering="geometricPrecision"/>
                         <text x="56" y="26" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
                               font-size="32" font-weight="900" letter-spacing="-0.5" fill="url(#logoGradient)">SS</text>
                     </svg>
@@ -344,7 +346,24 @@ AI role:       Implementation, optimization
 
             <div class="stack-grid">
                 <div class="stack-card glass-card">
-                    <div class="stack-icon">⚡</div>
+                    <div class="stack-icon">
+                        <svg width="48" height="48" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"
+                             shape-rendering="geometricPrecision">
+                            <defs>
+                                <linearGradient id="stackBoltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M 54 3 L 30 39 L 45 39 L 39 93 L 75 36 L 54 36 Z"
+                                  fill="url(#stackBoltGradient)"
+                                  stroke="url(#stackBoltGradient)"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  shape-rendering="geometricPrecision"/>
+                        </svg>
+                    </div>
                     <h3>48-Hour Prototypes</h3>
                     <p class="stack-tool">Working code by Thursday</p>
                     <p>AI builds while you sleep. Daily progress updates, not quarterly check-ins. Standard web projects go from brief to production in 2-5 days, not 2-5 weeks. See results immediately, iterate rapidly, ship faster.</p>
@@ -417,7 +436,24 @@ AI role:       Implementation, optimization
 
                 <div class="step-card glass-card">
                     <div class="step-number">02</div>
-                    <div class="step-icon">⚡</div>
+                    <div class="step-icon">
+                        <svg width="48" height="48" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"
+                             shape-rendering="geometricPrecision">
+                            <defs>
+                                <linearGradient id="stepBoltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M 54 3 L 30 39 L 45 39 L 39 93 L 75 36 L 54 36 Z"
+                                  fill="url(#stepBoltGradient)"
+                                  stroke="url(#stepBoltGradient)"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  shape-rendering="geometricPrecision"/>
+                        </svg>
+                    </div>
                     <h3>Build</h3>
                     <p>Working solution in 2-5 days. You'll see progress daily.</p>
                 </div>
@@ -601,7 +637,24 @@ AI role:       Implementation, optimization
         <div class="container">
             <div class="proof-grid">
                 <div class="proof-stat-item">
-                    <div class="proof-icon">⚡</div>
+                    <div class="proof-icon">
+                        <svg width="32" height="32" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"
+                             shape-rendering="geometricPrecision">
+                            <defs>
+                                <linearGradient id="proofBoltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M 54 3 L 30 39 L 45 39 L 39 93 L 75 36 L 54 36 Z"
+                                  fill="url(#proofBoltGradient)"
+                                  stroke="url(#proofBoltGradient)"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  shape-rendering="geometricPrecision"/>
+                        </svg>
+                    </div>
                     <div class="proof-content">
                         <div class="proof-stat-value">80 min</div>
                         <div class="proof-stat-desc">to build this site</div>
@@ -636,8 +689,9 @@ AI role:       Implementation, optimization
     <footer>
         <div class="footer-minimal">
             <div class="footer-content">
-                <p>
-                    <svg width="80" height="22" viewBox="0 0 118 32" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                <p style="display: flex; align-items: center; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                    <svg width="80" height="22" viewBox="0 0 118 32" xmlns="http://www.w3.org/2000/svg"
+                         shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
                         <defs>
                             <linearGradient id="footerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                 <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
@@ -647,11 +701,33 @@ AI role:       Implementation, optimization
                         <text x="0" y="26" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
                               font-size="32" font-weight="900" letter-spacing="-0.5" fill="url(#footerLogoGradient)">PA</text>
                         <path d="M 50 4 L 42 16 L 47 16 L 45 28 L 55 15 L 50 15 Z"
-                              fill="url(#footerLogoGradient)"/>
+                              fill="url(#footerLogoGradient)"
+                              shape-rendering="geometricPrecision"/>
                         <text x="56" y="26" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
                               font-size="32" font-weight="900" letter-spacing="-0.5" fill="url(#footerLogoGradient)">SS</text>
                     </svg>
-                    |  © 2025  |  Built in 80 min ⚡
+                    <span>|</span>
+                    <span>© 2025</span>
+                    <span>|</span>
+                    <span style="display: flex; align-items: center; gap: 4px;">
+                        Built in 80 min
+                        <svg width="14" height="14" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"
+                             shape-rendering="geometricPrecision">
+                            <defs>
+                                <linearGradient id="footerBoltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M 54 3 L 30 39 L 45 39 L 39 93 L 75 36 L 54 36 Z"
+                                  fill="url(#footerBoltGradient)"
+                                  stroke="url(#footerBoltGradient)"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  shape-rendering="geometricPrecision"/>
+                        </svg>
+                    </span>
                 </p>
                 <a href="https://claude.ai/claude-code" target="_blank" class="claude-badge" title="Built with Claude Code">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
