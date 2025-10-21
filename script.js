@@ -44,6 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothScroll();
     initMobileMenu();
     initScrollProgress();
+    initFloatingCTA();
+    initParallaxHero();
+    initCustomCursor();
+    initSectionNav();
+    initTextReveal();
+    initHeaderScroll();
+    initContactForm();
 });
 
 // =============================================================================
@@ -117,9 +124,9 @@ function initCounters() {
         threshold: 0.5
     });
 
-    const statsSection = document.querySelector('.hero-stats');
-    if (statsSection) {
-        observer.observe(statsSection);
+    const heroSection = document.querySelector('.hero-split');
+    if (heroSection) {
+        observer.observe(heroSection);
     }
 }
 
@@ -147,6 +154,28 @@ function initSmoothScroll() {
                     top: offsetPosition,
                     behavior: 'smooth'
                 });
+
+                // Focus contact form if scrolling to contact section
+                if (href === '#contact-form') {
+                    // Add zoom animation class
+                    const contactForm = document.querySelector('.contact-form');
+                    if (contactForm) {
+                        contactForm.classList.add('form-zoom-in');
+
+                        // Remove class after animation completes
+                        setTimeout(() => {
+                            contactForm.classList.remove('form-zoom-in');
+                        }, 600);
+                    }
+
+                    // Focus input after scroll + zoom animation
+                    setTimeout(() => {
+                        const nameInput = document.getElementById('name');
+                        if (nameInput) {
+                            nameInput.focus();
+                        }
+                    }, 800); // Wait for smooth scroll to complete
+                }
             }
         });
     });
@@ -218,6 +247,28 @@ function initScrollProgress() {
 }
 
 // =============================================================================
+// Floating CTA Button
+// =============================================================================
+function initFloatingCTA() {
+    const floatingCTA = document.querySelector('.floating-cta');
+    if (!floatingCTA) return;
+
+    const showCTA = () => {
+        const scrollY = window.scrollY;
+        const triggerPoint = 500; // Show after scrolling 500px
+
+        if (scrollY > triggerPoint) {
+            floatingCTA.classList.add('visible');
+        } else {
+            floatingCTA.classList.remove('visible');
+        }
+    };
+
+    window.addEventListener('scroll', showCTA, { passive: true });
+    showCTA(); // Initial check
+}
+
+// =============================================================================
 // Dynamic Background Shapes (optional enhancement)
 // =============================================================================
 function initDynamicBackground() {
@@ -235,3 +286,317 @@ function initDynamicBackground() {
 
 // Initialize dynamic background
 initDynamicBackground();
+
+// =============================================================================
+// Parallax Hero Effect
+// =============================================================================
+function initParallaxHero() {
+    const heroStat = document.querySelector('.hero-stat-giant');
+    const heroContent = document.querySelector('.hero-content');
+
+    if (!heroStat || window.innerWidth < 768) return; // Desktop only
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    function animate() {
+        // Smooth easing
+        currentX += (mouseX - currentX) * 0.1;
+        currentY += (mouseY - currentY) * 0.1;
+
+        // Apply parallax transform
+        const moveX = currentX * 30; // 30px max movement
+        const moveY = currentY * 30;
+
+        heroStat.style.transform = `translate(${moveX}px, ${moveY}px)`;
+
+        // Opposite direction for content (subtle)
+        const contentMoveX = currentX * -10;
+        const contentMoveY = currentY * -10;
+        heroContent.style.transform = `translate(${contentMoveX}px, ${contentMoveY}px)`;
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+
+// =============================================================================
+// Custom Cursor
+// =============================================================================
+function initCustomCursor() {
+    if (window.innerWidth < 768 || 'ontouchstart' in window) return; // Desktop only
+
+    // Create cursor elements
+    const cursor = document.createElement('div');
+    const cursorDot = document.createElement('div');
+
+    cursor.className = 'custom-cursor';
+    cursorDot.className = 'custom-cursor-dot';
+
+    document.body.appendChild(cursor);
+    document.body.appendChild(cursorDot);
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+    let dotX = 0;
+    let dotY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+        // Smooth follow for outer cursor
+        cursorX += (mouseX - cursorX) * 0.15;
+        cursorY += (mouseY - cursorY) * 0.15;
+
+        // Faster follow for dot
+        dotX += (mouseX - dotX) * 0.3;
+        dotY += (mouseY - dotY) * 0.3;
+
+        cursor.style.left = cursorX + 'px';
+        cursor.style.top = cursorY + 'px';
+        cursorDot.style.left = dotX + 'px';
+        cursorDot.style.top = dotY + 'px';
+
+        requestAnimationFrame(animateCursor);
+    }
+
+    animateCursor();
+
+    // Magnetic effect on interactive elements
+    const magneticElements = document.querySelectorAll('a, button, .btn, .project-card');
+
+    magneticElements.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            cursor.classList.add('cursor-hover');
+            cursorDot.classList.add('cursor-hover');
+        });
+
+        element.addEventListener('mouseleave', () => {
+            cursor.classList.remove('cursor-hover');
+            cursorDot.classList.remove('cursor-hover');
+        });
+    });
+}
+
+// =============================================================================
+// Section Navigation Dots
+// =============================================================================
+function initSectionNav() {
+    const sectionNav = document.querySelector('.section-nav');
+    const navDots = document.querySelectorAll('.nav-dot');
+    const sections = document.querySelectorAll('section[id]');
+
+    if (!sectionNav || window.innerWidth < 768) return;
+
+    // Show navigation after scrolling past hero
+    const showNav = () => {
+        if (window.scrollY > 600) {
+            sectionNav.classList.add('visible');
+        } else {
+            sectionNav.classList.remove('visible');
+        }
+    };
+
+    window.addEventListener('scroll', showNav, { passive: true });
+    showNav();
+
+    // Update active dot based on scroll position
+    const updateActiveDot = () => {
+        let currentSection = '';
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+
+            if (window.scrollY >= sectionTop - 200) {
+                currentSection = section.getAttribute('id');
+            }
+        });
+
+        navDots.forEach(dot => {
+            dot.classList.remove('active');
+            if (dot.getAttribute('data-section') === currentSection) {
+                dot.classList.add('active');
+            }
+        });
+    };
+
+    window.addEventListener('scroll', updateActiveDot, { passive: true });
+    updateActiveDot();
+}
+
+// =============================================================================
+// Text Reveal Animation
+// =============================================================================
+function initTextReveal() {
+    const titles = document.querySelectorAll('.section-title');
+
+    titles.forEach(title => {
+        // Split text into individual letters wrapped in spans
+        const text = title.textContent;
+        title.innerHTML = '';
+
+        text.split('').forEach(char => {
+            const span = document.createElement('span');
+            span.className = 'letter';
+            span.textContent = char === ' ' ? '\u00A0' : char; // Preserve spaces
+            title.appendChild(span);
+        });
+    });
+
+    // Trigger reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('reveal-text');
+            }
+        });
+    }, {
+        threshold: 0.3
+    });
+
+    titles.forEach(title => {
+        observer.observe(title);
+    });
+}
+
+// =============================================================================
+// Header Scroll Effect
+// =============================================================================
+function initHeaderScroll() {
+    const header = document.querySelector('header');
+    if (!header) return;
+
+    const handleScroll = () => {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial call
+}
+
+// =============================================================================
+// Contact Form Handling
+// =============================================================================
+function initContactForm() {
+    const form = document.getElementById('mainContactForm');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Get form data
+        const formData = new FormData(form);
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            projectType: formData.get('project-type'),
+            message: formData.get('message')
+        };
+
+        // Basic client-side validation
+        if (!data.name || data.name.length < 2) {
+            showFormError('Please enter your name');
+            return;
+        }
+
+        if (!data.email || !isValidEmail(data.email)) {
+            showFormError('Please enter a valid email address');
+            return;
+        }
+
+        if (!data.message || data.message.length < 10) {
+            showFormError('Please enter a message (at least 10 characters)');
+            return;
+        }
+
+        // Disable submit button
+        const submitButton = form.querySelector('.form-submit');
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<span>Sending...</span>';
+
+        try {
+            // Simulate form submission (replace with actual endpoint)
+            // In production, you'd send to a backend endpoint like:
+            // const response = await fetch('/api/contact', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(data)
+            // });
+
+            // For demo purposes, simulate a delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Show success message
+            showFormSuccess();
+
+            // Reset form
+            form.reset();
+
+            // Log to console (for demonstration)
+            console.log('📧 Form submitted:', data);
+
+        } catch (error) {
+            console.error('Form submission error:', error);
+            showFormError('Something went wrong. Please email me directly at info@paiss.me');
+        } finally {
+            // Re-enable submit button
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+        }
+    });
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function showFormSuccess() {
+    const successMessage = document.querySelector('.form-success');
+    const errorMessage = document.querySelector('.form-error-message');
+
+    if (successMessage) {
+        errorMessage.style.display = 'none';
+        successMessage.style.display = 'flex';
+
+        // Hide after 10 seconds
+        setTimeout(() => {
+            successMessage.style.display = 'none';
+        }, 10000);
+    }
+}
+
+function showFormError(message) {
+    const errorMessage = document.querySelector('.form-error-message');
+    const successMessage = document.querySelector('.form-success');
+
+    if (errorMessage) {
+        successMessage.style.display = 'none';
+        errorMessage.querySelector('p').textContent = message;
+        errorMessage.style.display = 'flex';
+
+        // Hide after 8 seconds
+        setTimeout(() => {
+            errorMessage.style.display = 'none';
+        }, 8000);
+    }
+}
