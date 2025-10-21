@@ -49,6 +49,7 @@ COMMAND_ID=$(aws ssm send-command \
         'fi',
         'git fetch origin',
         'git reset --hard origin/main',
+        'export ENVIRONMENT=$ENVIRONMENT',
         'export DOCKER_BUILDKIT=1',
         'docker-compose -p \$PROJECT_NAME up -d --build',
         'echo \"✅ $ENVIRONMENT is live!\"'

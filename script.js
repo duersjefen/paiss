@@ -1,13 +1,49 @@
 // =============================================================================
 // PAISS - JavaScript Animations and Interactions
+// AI-Native Development Showcase
 // =============================================================================
+
+// Console Easter Egg
+console.log(`
+%c🤖 PAISS - AI-Native Development Showcase
+%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+%cBuild Stats:
+%c  Build Time:     ~30 minutes
+  AI Tool:        Claude Code (Sonnet 4.5)
+  Method:         AI-assisted development
+  Lines of Code:  ~1,200
+  Test Coverage:  Manual (visual QA)
+
+%cSpeed Comparison:
+%c  Traditional:    8+ hours
+  AI-Native:      30 minutes
+  Efficiency:     16x faster 🚀
+
+%cWant to build this fast?
+%c  👉 Get in touch: info@paiss.me
+  👉 Website: https://paiss.me
+
+%cView source for AI collaboration markers! 👀
+`,
+'color: #06b6d4; font-size: 16px; font-weight: bold;',
+'color: #64748b;',
+'color: #8b5cf6; font-weight: bold;',
+'color: #64748b;',
+'color: #8b5cf6; font-weight: bold;',
+'color: #64748b;',
+'color: #8b5cf6; font-weight: bold;',
+'color: #06b6d4; font-weight: bold;',
+'color: #94a3b8; font-style: italic;'
+);
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initCounters();
-    initTypingAnimation();
     initSmoothScroll();
+    initMobileMenu();
+    initScrollProgress();
 });
 
 // =============================================================================
@@ -36,11 +72,19 @@ function initScrollAnimations() {
 // Animated Counters
 // =============================================================================
 function initCounters() {
-    const counters = document.querySelectorAll('.stat-number');
+    // Select all elements with data-target attribute (numeric counters only)
+    const counters = document.querySelectorAll('[data-target]');
     let hasAnimated = false;
 
     const animateCounter = (counter) => {
-        const target = parseInt(counter.getAttribute('data-target'));
+        const targetValue = counter.getAttribute('data-target');
+        const target = parseInt(targetValue);
+
+        // Only animate if target is a valid number
+        if (isNaN(target)) {
+            return;
+        }
+
         const duration = 2000; // 2 seconds
         const steps = 60;
         const increment = target / steps;
@@ -79,61 +123,6 @@ function initCounters() {
     }
 }
 
-// =============================================================================
-// Typing Animation
-// =============================================================================
-function initTypingAnimation() {
-    const textElement = document.getElementById('dynamic-text');
-    if (!textElement) return;
-
-    const texts = [
-        'Pragmatic AI',
-        'Modern Web Apps',
-        'Cloud Infrastructure',
-        'Intelligent Systems'
-    ];
-
-    let textIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let isPaused = false;
-
-    function type() {
-        const currentText = texts[textIndex];
-
-        if (isPaused) {
-            setTimeout(type, 2000); // Pause for 2 seconds
-            isPaused = false;
-            return;
-        }
-
-        if (isDeleting) {
-            textElement.textContent = currentText.substring(0, charIndex - 1);
-            charIndex--;
-
-            if (charIndex === 0) {
-                isDeleting = false;
-                textIndex = (textIndex + 1) % texts.length;
-                setTimeout(type, 500); // Brief pause before typing next text
-                return;
-            }
-        } else {
-            textElement.textContent = currentText.substring(0, charIndex + 1);
-            charIndex++;
-
-            if (charIndex === currentText.length) {
-                isDeleting = true;
-                isPaused = true;
-            }
-        }
-
-        const speed = isDeleting ? 50 : 100;
-        setTimeout(type, speed);
-    }
-
-    // Start typing animation
-    type();
-}
 
 // =============================================================================
 // Smooth Scroll
@@ -161,6 +150,71 @@ function initSmoothScroll() {
             }
         });
     });
+}
+
+// =============================================================================
+// Mobile Menu Toggle
+// =============================================================================
+function initMobileMenu() {
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (!menuToggle || !navLinks) return;
+
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('mobile-open');
+
+        // Animate hamburger icon
+        const spans = menuToggle.querySelectorAll('span');
+        if (navLinks.classList.contains('mobile-open')) {
+            spans[0].style.transform = 'rotate(45deg) translateY(7px)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'rotate(-45deg) translateY(-7px)';
+        } else {
+            spans[0].style.transform = '';
+            spans[1].style.opacity = '';
+            spans[2].style.transform = '';
+        }
+    });
+
+    // Close menu when clicking on a link
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('mobile-open');
+            const spans = menuToggle.querySelectorAll('span');
+            spans[0].style.transform = '';
+            spans[1].style.opacity = '';
+            spans[2].style.transform = '';
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+            navLinks.classList.remove('mobile-open');
+            const spans = menuToggle.querySelectorAll('span');
+            spans[0].style.transform = '';
+            spans[1].style.opacity = '';
+            spans[2].style.transform = '';
+        }
+    });
+}
+
+// =============================================================================
+// Scroll Progress Indicator
+// =============================================================================
+function initScrollProgress() {
+    const progressBar = document.querySelector('.scroll-progress');
+    if (!progressBar) return;
+
+    const updateProgress = () => {
+        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (window.scrollY / windowHeight) * 100;
+        progressBar.style.width = `${Math.min(scrolled, 100)}%`;
+    };
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress(); // Initial call
 }
 
 // =============================================================================

@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+🤖 PAISS - AI-Native Development Showcase
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Built with:    Claude Code (Sonnet 4.5)
+Build time:    ~30 minutes
+Method:        AI-assisted development
+Human role:    Strategy, positioning, review
+AI role:       Implementation, optimization
+
+👀 Look for AI collaboration markers throughout the source!
+-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PAISS - Pragmatic AI Software Solutions. Building intelligent, scalable software solutions with modern AI technologies.">
-    <meta name="keywords" content="AI, Software Development, Machine Learning, Web Applications, Cloud Infrastructure">
-    <meta name="author" content="PAISS">
-    <title>PAISS - Pragmatic AI Software Solutions</title>
+    <meta name="description" content="PAISS - Ship solutions in days, not months. AI-native development for websites, automation, and process optimization.">
+    <meta name="keywords" content="AI-Native Development, Fast Software Development, Automation, Web Development, Claude Code">
+    <meta name="author" content="PAISS - Martijn">
+    <title>PAISS - Ship Solutions in Days, Not Months</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="micro-interactions.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress"></div>
+
     <!-- Animated Background -->
     <div class="bg-animation">
         <div class="shape shape-1"></div>
@@ -29,11 +44,16 @@
                 <h1>PAISS</h1>
                 <span class="tagline">Pragmatic AI Software Solutions</span>
             </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#tech">Tech Stack</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#projects">Projects</a></li>
+                <li><a href="#how">How It Works</a></li>
+                <li><a href="#about">Why AI-Native</a></li>
+                <li><a href="#services">What I Build</a></li>
+                <li><a href="#projects">Work</a></li>
                 <li><a href="#contact" class="nav-cta">Contact</a></li>
             </ul>
         </nav>
@@ -45,15 +65,14 @@
             <div class="hero-content">
                 <div class="hero-badge">
                     <span class="badge-dot"></span>
-                    <span>AI & Software Engineering</span>
+                    <span>AI-Native Development</span>
                 </div>
                 <h2 class="hero-title">
-                    Building the Future with
-                    <span class="gradient-text typing-animation" id="dynamic-text">Pragmatic AI</span>
+                    Ship solutions in
+                    <span class="gradient-text">days, not months</span>
                 </h2>
                 <p class="hero-description">
-                    Creating intelligent, scalable software solutions that solve real-world problems.
-                    From cloud infrastructure to AI-powered applications, delivering production-grade excellence.
+                    Problem → solution → invoice.
                 </p>
                 <div class="cta-buttons">
                     <a href="#contact" class="btn btn-primary">
@@ -62,108 +81,82 @@
                             <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </a>
-                    <a href="#projects" class="btn btn-secondary">
-                        <span>View Projects</span>
+                    <a href="#how" class="btn btn-secondary">
+                        <span>How It Works</span>
                     </a>
                 </div>
 
-                <!-- Stats -->
+                <!-- Speed Metrics -->
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <div class="stat-number" data-target="100">0</div>
-                        <div class="stat-label">% Test Coverage</div>
+                        <div class="stat-number">10<span class="stat-suffix">x</span></div>
+                        <div class="stat-label">Faster Delivery</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number" data-target="0">0</div>
-                        <div class="stat-label">Downtime Deployments</div>
+                        <div class="stat-number" data-target="30">0</div>
+                        <div class="stat-label">This Site (Minutes)</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number" data-target="24">0</div>
-                        <div class="stat-label">/ 7 Monitoring</div>
+                        <div class="stat-number">Same</div>
+                        <div class="stat-label">Day Deployment</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Tech Stack Section -->
-    <section id="tech" class="tech-stack scroll-animate">
+    <!--
+    🤖 AI-Generated Section
+    Built: 2025-10-21
+    Purpose: Showcase simple 3-step process
+    Iterations: 2 (refined messaging)
+    -->
+    <!-- How It Works Section -->
+    <section id="how" class="how-it-works scroll-animate">
         <div class="container">
-            <h2 class="section-title">Tech Stack</h2>
+            <h2 class="section-title">How It Works</h2>
             <p class="section-description">
-                Building with modern, production-grade technologies
+                Simple. Fast. No overhead.
             </p>
 
-            <div class="tech-grid">
-                <div class="tech-category">
-                    <h3>AI & ML</h3>
-                    <div class="tech-items">
-                        <div class="tech-item">
-                            <span class="tech-icon">🤖</span>
-                            <span>Claude AI</span>
-                        </div>
-                        <div class="tech-item">
-                            <span class="tech-icon">🧠</span>
-                            <span>PyTorch</span>
-                        </div>
-                        <div class="tech-item">
-                            <span class="tech-icon">🔬</span>
-                            <span>OpenAI API</span>
-                        </div>
-                    </div>
+            <div class="steps-grid">
+                <div class="step-card glass-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">💬</div>
+                    <h3>Problem</h3>
+                    <p>Tell me what you need.</p>
                 </div>
 
-                <div class="tech-category">
-                    <h3>Backend</h3>
-                    <div class="tech-items">
-                        <div class="tech-item">
-                            <span class="tech-icon">🐍</span>
-                            <span>Python</span>
-                        </div>
-                        <div class="tech-item">
-                            <span class="tech-icon">⚡</span>
-                            <span>FastAPI</span>
-                        </div>
-                        <div class="tech-item">
-                            <span class="tech-icon">🗄️</span>
-                            <span>PostgreSQL</span>
-                        </div>
-                    </div>
+                <div class="step-card glass-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">⚡</div>
+                    <h3>Build</h3>
+                    <p>Working solution in days.</p>
                 </div>
 
-                <div class="tech-category">
-                    <h3>Frontend</h3>
-                    <div class="tech-items">
-                        <div class="tech-item">
-                            <span class="tech-icon">💚</span>
-                            <span>Vue 3</span>
-                        </div>
-                        <div class="tech-item">
-                            <span class="tech-icon">⚡</span>
-                            <span>Vite</span>
-                        </div>
-                        <div class="tech-item">
-                            <span class="tech-icon">🎨</span>
-                            <span>Tailwind CSS</span>
-                        </div>
+                <div class="step-card glass-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">✅</div>
+                    <h3>Invoice</h3>
+                    <p>Send invoice. No contracts unless you want them.</p>
+                </div>
+            </div>
+
+            <!-- Speed Comparison -->
+            <div class="comparison-box">
+                <div class="comparison-item traditional">
+                    <h4>Traditional Development</h4>
+                    <div class="timeline">
+                        <div class="timeline-bar slow"></div>
+                        <span>Weeks to months</span>
                     </div>
                 </div>
-
-                <div class="tech-category">
-                    <h3>DevOps & Cloud</h3>
-                    <div class="tech-items">
-                        <div class="tech-item">
-                            <span class="tech-icon">🐳</span>
-                            <span>Docker</span>
-                        </div>
-                        <div class="tech-item">
-                            <span class="tech-icon">☁️</span>
-                            <span>AWS</span>
-                        </div>
-                        <div class="tech-item">
-                            <span class="tech-icon">🚀</span>
-                            <span>GitHub Actions</span>
-                        </div>
+                <div class="comparison-arrow">→</div>
+                <div class="comparison-item ai-native">
+                    <h4>AI-Native Development</h4>
+                    <div class="timeline">
+                        <div class="timeline-bar fast"></div>
+                        <span>Days to weeks</span>
                     </div>
                 </div>
             </div>
@@ -173,40 +166,25 @@
     <!-- About Section -->
     <section id="about" class="about scroll-animate">
         <div class="container">
-            <h2 class="section-title">Core Principles</h2>
+            <h2 class="section-title">Why AI-Native?</h2>
             <p class="section-description">
-                Building production-grade software with a focus on quality, reliability, and innovation
+                The tools have changed. The approach should too.
             </p>
             <div class="features">
                 <div class="feature-card glass-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3>AI-Powered Solutions</h3>
-                    <p>Leveraging cutting-edge AI technologies like Claude and OpenAI to build intelligent systems that learn and adapt to real-world challenges.</p>
-                    <div class="feature-tags">
-                        <span class="tag">Machine Learning</span>
-                        <span class="tag">NLP</span>
-                        <span class="tag">LLMs</span>
-                    </div>
+                    <div class="feature-icon">🚀</div>
+                    <h3>Speed is the Feature</h3>
+                    <p>Prototype tomorrow, not proposal next week. AI handles heavy lifting, I handle strategy.</p>
                 </div>
                 <div class="feature-card glass-card">
-                    <div class="feature-icon">☁️</div>
-                    <h3>Cloud Infrastructure</h3>
-                    <p>Scalable, reliable cloud architecture with zero-downtime blue-green deployments, comprehensive monitoring, and automated failover.</p>
-                    <div class="feature-tags">
-                        <span class="tag">AWS</span>
-                        <span class="tag">Docker</span>
-                        <span class="tag">Kubernetes</span>
-                    </div>
+                    <div class="feature-icon">🔧</div>
+                    <h3>Tech Stack Agnostic</h3>
+                    <p>Care about shipping, not tech preferences. AI picks the best tool for your problem.</p>
                 </div>
                 <div class="feature-card glass-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Modern Web Apps</h3>
-                    <p>Fast, responsive web applications built with Vue 3, FastAPI, and modern best practices. TDD-first approach with 100% test coverage.</p>
-                    <div class="feature-tags">
-                        <span class="tag">Vue 3</span>
-                        <span class="tag">FastAPI</span>
-                        <span class="tag">TDD</span>
-                    </div>
+                    <div class="feature-icon">💡</div>
+                    <h3>Adaptability Over Expertise</h3>
+                    <p>Rapid learning + shipping outcomes. Your project won't wait for me to "get good" at something.</p>
                 </div>
             </div>
         </div>
@@ -215,50 +193,30 @@
     <!-- Services Section -->
     <section id="services" class="services scroll-animate">
         <div class="container">
-            <h2 class="section-title">Services</h2>
+            <h2 class="section-title">What I Build</h2>
             <p class="section-description">
-                End-to-end solutions for modern software development
+                Whatever you need. Here's what clients typically ask for.
             </p>
             <div class="services-grid">
                 <div class="service-card">
-                    <div class="service-icon">🎯</div>
+                    <div class="service-icon">🌐</div>
+                    <h3>Websites</h3>
+                    <p>Modern, fast, deployed. This site? 30 minutes.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⚙️</div>
+                    <h3>Automation</h3>
+                    <p>Scripts, integrations, workflows. Remove the friction.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔄</div>
+                    <h3>Process Optimization</h3>
+                    <p>Find bottlenecks. Build tools that get used.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🤖</div>
                     <h3>AI Integration</h3>
-                    <p>Integrate AI capabilities into your existing applications with custom models, prompt engineering, and API integrations.</p>
-                    <ul class="service-features">
-                        <li>Custom model fine-tuning</li>
-                        <li>LLM API integration</li>
-                        <li>Prompt optimization</li>
-                    </ul>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🏗️</div>
-                    <h3>Platform Engineering</h3>
-                    <p>Multi-tenant platforms with shared infrastructure, monitoring, and automated blue-green deployments.</p>
-                    <ul class="service-features">
-                        <li>Zero-downtime deployments</li>
-                        <li>Automated failover</li>
-                        <li>Real-time monitoring</li>
-                    </ul>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">📊</div>
-                    <h3>Data Analytics</h3>
-                    <p>Turn data into insights with visualization, monitoring dashboards, and real-time analytics pipelines.</p>
-                    <ul class="service-features">
-                        <li>Real-time dashboards</li>
-                        <li>Custom metrics</li>
-                        <li>Automated alerts</li>
-                    </ul>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🔧</div>
-                    <h3>DevOps & CI/CD</h3>
-                    <p>Automated pipelines, infrastructure as code, and production-ready deployment strategies with GitHub Actions.</p>
-                    <ul class="service-features">
-                        <li>Infrastructure as Code</li>
-                        <li>Automated testing</li>
-                        <li>Continuous deployment</li>
-                    </ul>
+                    <p>Practical AI, not buzzwords.</p>
                 </div>
             </div>
         </div>
@@ -267,9 +225,9 @@
     <!-- Projects Section -->
     <section id="projects" class="projects scroll-animate">
         <div class="container">
-            <h2 class="section-title">Featured Projects</h2>
+            <h2 class="section-title">Recent Work</h2>
             <p class="section-description">
-                Real-world applications built with modern technologies
+                Early-stage portfolio. Building in public.
             </p>
             <div class="projects-grid">
                 <div class="project-card">
@@ -277,15 +235,9 @@
                         <span class="project-status live">● Live</span>
                     </div>
                     <h3>Filter iCal</h3>
-                    <p>Advanced calendar filtering and viewing platform with real-time updates, subscription management, and multi-tenant architecture.</p>
-                    <div class="project-tech">
-                        <span>Python</span>
-                        <span>Vue 3</span>
-                        <span>PostgreSQL</span>
-                        <span>Docker</span>
-                    </div>
+                    <p>Calendar filtering with subscriptions. Python, Vue, PostgreSQL.</p>
                     <a href="https://filter-ical.de" target="_blank" class="project-link">
-                        Visit Project
+                        Visit Site
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -295,26 +247,18 @@
                     <div class="project-header">
                         <span class="project-status live">● Live</span>
                     </div>
-                    <h3>Multi-Tenant Platform</h3>
-                    <p>Production-grade infrastructure for hosting multiple applications with zero-downtime blue-green deployments and comprehensive monitoring.</p>
-                    <div class="project-tech">
-                        <span>Docker</span>
-                        <span>Nginx</span>
-                        <span>Grafana</span>
-                        <span>AWS EC2</span>
+                    <h3>This Site</h3>
+                    <p>Built in 30 minutes with Claude Code. Modern, responsive, deployed.</p>
+                    <div class="meta-note">
+                        <small>💡 Open DevTools console for build stats</small>
                     </div>
                 </div>
                 <div class="project-card coming-soon">
                     <div class="project-header">
-                        <span class="project-status dev">● In Development</span>
+                        <span class="project-status building">● Building Portfolio</span>
                     </div>
-                    <h3>More Coming Soon</h3>
-                    <p>Exciting new projects in AI automation, cloud infrastructure, and intelligent systems are currently in active development.</p>
-                    <div class="project-tech">
-                        <span>AI/ML</span>
-                        <span>Cloud</span>
-                        <span>Automation</span>
-                    </div>
+                    <h3>Your Project Next</h3>
+                    <p>Early-stage means availability. Let's build.</p>
                 </div>
             </div>
         </div>
@@ -325,7 +269,7 @@
         <div class="container">
             <h2 class="section-title">Get in Touch</h2>
             <p class="section-description">
-                Interested in working together? Let's discuss how we can help bring your ideas to life.
+                Let's talk.
             </p>
             <div class="contact-info">
                 <div class="contact-card glass-card">
@@ -354,18 +298,17 @@
                 <div class="footer-brand">
                     <h3>PAISS</h3>
                     <p>Pragmatic AI Software Solutions</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#about">About</a>
-                    <a href="#tech">Tech</a>
-                    <a href="#services">Services</a>
-                    <a href="#projects">Projects</a>
-                    <a href="#contact">Contact</a>
+                    <p class="footer-tagline">Ship solutions in days, not months</p>
                 </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2025 PAISS. All rights reserved.</p>
-                <p class="footer-tagline">Building intelligent solutions, one line at a time.</p>
+                <div class="build-info">
+                    <span class="build-badge">
+                        🤖 Built with Claude Code in <span class="build-time" data-target="30">0</span> min
+                    </span>
+                    <span class="build-note">Traditional estimate: 8+ hours</span>
+                </div>
             </div>
         </div>
     </footer>
