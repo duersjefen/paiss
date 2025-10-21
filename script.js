@@ -3,40 +3,6 @@
 // AI-Native Development Showcase
 // =============================================================================
 
-// Console Easter Egg
-console.log(`
-%c🤖 PAISS - AI-Native Development Showcase
-%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-%cBuild Stats:
-%c  Build Time:     ~30 minutes
-  AI Tool:        Claude Code (Sonnet 4.5)
-  Method:         AI-assisted development
-  Lines of Code:  ~1,200
-  Test Coverage:  Manual (visual QA)
-
-%cSpeed Comparison:
-%c  Traditional:    8+ hours
-  AI-Native:      30 minutes
-  Efficiency:     16x faster 🚀
-
-%cWant to build this fast?
-%c  👉 Get in touch: info@paiss.me
-  👉 Website: https://paiss.me
-
-%cView source for AI collaboration markers! 👀
-`,
-'color: #06b6d4; font-size: 16px; font-weight: bold;',
-'color: #64748b;',
-'color: #8b5cf6; font-weight: bold;',
-'color: #64748b;',
-'color: #8b5cf6; font-weight: bold;',
-'color: #64748b;',
-'color: #8b5cf6; font-weight: bold;',
-'color: #06b6d4; font-weight: bold;',
-'color: #94a3b8; font-style: italic;'
-);
-
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
@@ -51,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTextReveal();
     initHeaderScroll();
     initContactForm();
+    initHeroTyping();
 });
 
 // =============================================================================
@@ -561,9 +528,6 @@ function initContactForm() {
             // Reset form
             form.reset();
 
-            // Log to console (for demonstration)
-            console.log('📧 Form submitted:', data);
-
         } catch (error) {
             console.error('Form submission error:', error);
             showFormError('Something went wrong. Please email me directly at info@paiss.me');
@@ -609,4 +573,65 @@ function showFormError(message) {
             errorMessage.style.display = 'none';
         }, 8000);
     }
+}
+
+// =============================================================================
+// Hero Typing Animation
+// =============================================================================
+function initHeroTyping() {
+    const typingElement = document.querySelector('.typing-text');
+    if (!typingElement) return;
+
+    const phrases = [
+        'Ship solutions in days, not months',
+        'AI-native development at scale',
+        '30x faster than traditional dev',
+        'Production-ready from day one'
+    ];
+
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let isPaused = false;
+
+    function type() {
+        const currentPhrase = phrases[phraseIndex];
+
+        if (isPaused) {
+            isPaused = false;
+            setTimeout(type, 2000); // Pause for 2 seconds before deleting
+            return;
+        }
+
+        if (isDeleting) {
+            // Backspace
+            typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
+            charIndex--;
+
+            if (charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                setTimeout(type, 500); // Brief pause before typing next phrase
+                return;
+            }
+        } else {
+            // Type forward
+            typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
+            charIndex++;
+
+            if (charIndex === currentPhrase.length) {
+                isDeleting = true;
+                isPaused = true;
+                setTimeout(type, 100);
+                return;
+            }
+        }
+
+        // Typing speed: slower when typing, faster when deleting
+        const speed = isDeleting ? 30 : 60;
+        setTimeout(type, speed);
+    }
+
+    // Start typing animation
+    type();
 }
