@@ -2150,17 +2150,32 @@ section {
 @media (max-width: 768px) {
     .proof-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
+        gap: 12px;
+    }
+
+    .proof-stat-item {
+        padding: 16px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .proof-icon {
+        font-size: 28px;
+    }
+
+    .proof-stat-value {
+        font-size: 16px;
+    }
+
+    .proof-stat-desc {
+        font-size: 11px;
     }
 }
 
 @media (max-width: 480px) {
-    .proof-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .proof-stat-item {
-        padding: 20px;
+    /* Hide stats proof section on very small screens - too cluttered */
+    .stats-proof {
+        display: none;
     }
 }
 
@@ -2326,6 +2341,20 @@ footer::before {
 }
 
 @media (max-width: 768px) {
+    /* Disable hover/transform effects on mobile - but keep buttons working */
+    .feature-card:hover,
+    .service-card:hover,
+    .project-card:hover,
+    .hosting-option:hover {
+        transform: none !important;
+        box-shadow: inherit !important;
+    }
+
+    /* Simplify animations - faster, less janky */
+    * {
+        transition-duration: 0.15s !important;
+    }
+
     .hero {
         padding: 60px 20px 50px;
         min-height: auto;
@@ -2402,7 +2431,17 @@ footer::before {
     }
 
     section {
-        padding: 50px 20px;
+        padding: 40px 20px; /* More compact on mobile */
+    }
+
+    .section-title {
+        font-size: 32px;
+        margin-bottom: 16px;
+    }
+
+    .section-description {
+        font-size: 17px;
+        margin-bottom: 32px; /* Less spacing */
     }
 
     .features,
@@ -2410,6 +2449,25 @@ footer::before {
     .services-grid,
     .project-metrics {
         grid-template-columns: 1fr;
+        gap: 20px; /* Tighter spacing */
+    }
+
+    /* More compact service cards */
+    .service-card {
+        padding: 24px;
+    }
+
+    .service-card h3 {
+        font-size: 20px;
+    }
+
+    /* More compact feature cards */
+    .feature-card {
+        padding: 28px;
+    }
+
+    .feature-card h3 {
+        font-size: 20px;
     }
 
     /* Hosting options mobile */
@@ -2424,14 +2482,14 @@ footer::before {
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
-        gap: 20px;
+        gap: 16px;
         padding-bottom: 20px;
         scrollbar-width: thin;
         scrollbar-color: var(--accent) var(--border);
     }
 
     .projects-grid::-webkit-scrollbar {
-        height: 8px;
+        height: 6px;
     }
 
     .projects-grid::-webkit-scrollbar-track {
@@ -2447,6 +2505,9 @@ footer::before {
     .project-card {
         min-width: 85%;
         scroll-snap-align: center;
+        padding: 24px;
+        touch-action: manipulation; /* Prevent zoom on tap */
+        user-select: none; /* Prevent text selection while scrolling */
     }
 
     .project-card:nth-child(1) {
@@ -2458,6 +2519,60 @@ footer::before {
     .project-card:nth-child(3) {
         min-height: auto;
         min-width: 85%;
+    }
+
+    /* Minimal cards on mobile - hide details */
+    .project-card h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .project-card p {
+        font-size: 14px;
+        margin-bottom: 16px;
+    }
+
+    /* Hide detailed sections on mobile */
+    .project-details {
+        display: none;
+    }
+
+    .meta-note {
+        display: none;
+    }
+
+    /* Compact metrics */
+    .project-metrics {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 12px;
+        background: rgba(248, 250, 252, 0.8);
+        border-radius: 8px;
+    }
+
+    .metric-item {
+        padding: 8px;
+    }
+
+    .metric-value {
+        font-size: 16px;
+    }
+
+    .metric-label {
+        font-size: 9px;
+    }
+
+    /* Minimal project links */
+    .project-links {
+        display: flex;
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .inspect-link {
+        padding: 10px 16px;
+        font-size: 16px; /* 16px minimum to prevent iOS zoom on tap */
+        touch-action: manipulation; /* Prevent double-tap zoom */
     }
 
     .comparison-box {
@@ -2622,7 +2737,22 @@ footer::before {
     }
 
     section {
-        padding: 50px 16px;
+        padding: 36px 16px; /* Even tighter on small screens */
+    }
+
+    .section-title {
+        font-size: 26px;
+        margin-bottom: 12px;
+    }
+
+    .section-description {
+        font-size: 15px;
+        margin-bottom: 24px;
+    }
+
+    /* Hide "Your Project Next" card on very small screens */
+    .project-card.coming-soon {
+        display: none;
     }
 
     .stat-number {

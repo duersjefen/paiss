@@ -10,14 +10,19 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothScroll();
     initMobileMenu();
     initScrollProgress();
-    initFloatingCTA();
-    initParallaxHero();
-    // initCustomCursor(); // Disabled - too distracting for business site
-    initSectionNav();
-    initTextReveal();
     initHeaderScroll();
     initContactForm();
     initHeroTyping();
+
+    // Only enable heavy animations on desktop
+    if (window.innerWidth > 768) {
+        initFloatingCTA();
+        initParallaxHero();
+        initTextReveal();
+    }
+
+    // Section nav works on all devices (needed for button navigation)
+    initSectionNav();
 });
 
 // =============================================================================
@@ -635,3 +640,4 @@ function initHeroTyping() {
     // Start typing animation
     type();
 }
+
