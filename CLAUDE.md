@@ -72,51 +72,51 @@ paiss/
 - **Build Tool:** Vite (Hot Module Replacement, fast refresh)
 - **Files:** HTML/CSS/JS with ES modules
 
-### Production Stack
-- **Build:** Multi-stage Docker build (Node + Vite → Nginx)
-- **Container:** Nginx (Alpine Linux) serving optimized static assets
-- **Port:** 80 (internal), mapped via platform nginx
+### Production Stack (SST)
+- **Build:** Vite (builds to `dist/`)
+- **Static Hosting:** S3 + CloudFront (CDN)
+- **Backend API:** API Gateway + Lambda (contact form)
+- **Email:** AWS SES (Simple Email Service)
+- **DNS:** Route53 (managed by SST)
+- **SSL:** ACM certificates (automatic via SST)
 - **Domain:** https://paiss.me
 - **Staging:** https://staging.paiss.me
-- **Platform:** Multi-tenant platform on EC2
+- **Region:** eu-north-1
 
-### Multi-Tenant Platform Architecture
-**CRITICAL:** paiss is deployed via the [multi-tenant-platform](../multi-tenant-platform) system.
+### SST Architecture
+**Modern serverless deployment via [SST v3](https://sst.dev)**
 
-**Repository Structure:**
+**Infrastructure Components:**
 ```
-~/Documents/Projects/
-├── paiss/                        # This repository (application code + deployment)
-│   ├── index.html                # Website content
-│   ├── styles.css                # Styling
-│   ├── Dockerfile                # Container image
-│   ├── deploy.sh                 # SSM deployment script
-│   ├── .env.ec2                  # EC2 instance ID (gitignored)
-│   └── CLAUDE.md                 # This file
-└── multi-tenant-platform/        # Platform repository (shared infrastructure)
-    └── platform/nginx/sites/     # Nginx configuration
-        └── paiss.conf            # paiss routing config
+SST Resources:
+├── StaticSite (S3 + CloudFront)
+│   ├── S3 bucket: Static assets (HTML/CSS/JS)
+│   ├── CloudFront: Global CDN
+│   └── Route53: DNS + SSL certificates
+│
+└── ApiGatewayV2 (API + Lambda)
+    ├── POST /contact → Lambda function
+    ├── SES integration for email
+    └── CORS configured for paiss.me domains
 ```
 
 **How Deployment Works:**
-1. **Code Changes** → Pushed to `paiss` GitHub repo (for backup/version control)
-2. **Deploy Command** → `make deploy-staging` or `make deploy-production` (from local machine)
-3. **SSM Execution** → Connects to EC2, pulls code, builds Docker image, starts container
-4. **No Registry** → Builds fresh on server every time (2-5 min)
-
-**Container Networking:**
-- Joins the `platform` Docker network (external)
-- Platform nginx proxies traffic to `paiss-production:80` or `paiss-staging:80`
-- No health check needed for static site
-
-**Environment Variables:**
-- EC2 instance ID in `.env.ec2` (local only, gitignored)
-- No sensitive data in paiss repository
+1. **Local Build** → Vite builds static assets to `dist/`
+2. **SST Deploy** → `make deploy-production` or `make deploy-staging`
+3. **Infrastructure** → SST creates/updates AWS resources:
+   - S3 bucket for static files
+   - CloudFront distribution (CDN)
+   - Lambda function for contact form
+   - API Gateway endpoint
+   - Route53 DNS records
+4. **Asset Upload** → Static files uploaded to S3
+5. **DNS Propagation** → 1-5 minutes for CloudFront
 
 **Key Files:**
 - Website content: `index.html`, `styles.css`, `script.js`
-- Deployment: `deploy.sh`, `Makefile`
-- Platform nginx: `../multi-tenant-platform/platform/nginx/sites/paiss.conf`
+- Infrastructure: `sst.config.ts`
+- Lambda handler: `src/lambda/contact.ts`
+- Deployment: `Makefile`
 
 ---
 
@@ -144,9 +144,10 @@ View application metrics at: https://monitoring.paiss.me
 ## 🚀 DEPLOYMENT WORKFLOW
 
 ### Prerequisites
-1. **EC2 Instance**: Amazon Linux 2023 in eu-north-1
-2. **AWS CLI**: Configured with SSM permissions
-3. **Instance ID**: Set in `.env.ec2` (copy from `.env.ec2.example`)
+1. **AWS Account**: With appropriate permissions (S3, CloudFront, Lambda, Route53, SES)
+2. **AWS CLI**: Configured with credentials (`aws configure`)
+3. **SST CLI**: Installed via `npm install` (already in package.json)
+4. **Node.js**: Version 18+ for SST and Vite
 
 ### Deployment Process
 ```bash
@@ -157,28 +158,41 @@ make dev  # Visit http://localhost:8002 (HMR enabled)
 # 3. Commit changes
 git add .
 git commit -m "Update landing page"
-git push origin main  # Optional: backup to GitHub
+git push origin main  # Recommended for version control
 
-# 4. Deploy to staging via SSM (builds on server)
+# 4. Deploy to staging via SST
 make deploy-staging  # Deploys to https://staging.paiss.me
 
 # 5. Test staging
 curl https://staging.paiss.me
 
-# 6. Deploy to production via SSM (builds on server)
+# 6. Deploy to production via SST
 make deploy-production  # Deploys to https://paiss.me
 ```
 
 ### How It Works
-1. **Deploy Command** → `make deploy-staging` or `make deploy-production`
-2. **SSM Connection** → Connects to EC2 via AWS Systems Manager (no SSH)
-3. **Git Pull** → Pulls latest code from GitHub
-4. **Build** → Builds Docker image on server from Dockerfile
-5. **Deploy** → Starts container with appropriate name (staging/production)
-6. **Done** → Site updated in 2-5 minutes
+1. **Build** → Vite builds static assets to `dist/`
+2. **SST Deploy** → `npm run sst:deploy --stage production`
+3. **Infrastructure Update** → SST creates/updates AWS resources:
+   - CloudFormation stack
+   - S3 bucket (if first deploy)
+   - CloudFront distribution (if first deploy)
+   - Lambda function (contact form handler)
+   - API Gateway endpoint
+4. **Asset Upload** → Static files uploaded to S3
+5. **CloudFront Invalidation** → Cache cleared for new content
+6. **DNS Update** → Route53 records updated (if needed)
+7. **Done** → Site live in 2-5 minutes
 
-**No GitHub Actions** - Deployment happens directly from your machine via SSM
-**No Registry** - Builds fresh on server every time
+**Caching Behavior:**
+- **S3**: Immediate update
+- **CloudFront**: 1-2 minutes (SST invalidates cache automatically)
+- **Browser**: Vite content hashing ensures fresh assets
+- **DNS**: 1-5 minutes for Route53 propagation
+
+**No Docker** - Static files served directly from S3 via CloudFront
+**No SSH/SSM** - Everything managed via AWS SDK
+**Serverless** - No servers to maintain, scales automatically
 
 ---
 

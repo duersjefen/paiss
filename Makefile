@@ -44,36 +44,43 @@ stop: ## Stop development server
 	@echo "✅ All services stopped"
 
 ##
-## 🚀 Deployment Commands (SSM-Based)
+## 🚀 Deployment Commands (SST)
 ##
 
-deploy-staging: ## Deploy to staging via SSM (builds on server)
-	@$(MAKE) deploy ENV=staging
+deploy-staging: ## Deploy to staging via SST (S3 + CloudFront + Lambda)
+	@echo "🚀 Deploying to staging with SST..."
+	@echo ""
+	@echo "📦 Building frontend..."
+	@npm run build
+	@echo ""
+	@echo "☁️  Deploying to AWS (S3 + CloudFront + Lambda)..."
+	@npm run sst:deploy -- --stage staging
+	@echo ""
+	@echo "✅ Staging deployment complete!"
+	@echo "🌐 https://staging.paiss.me"
 
-deploy-production: ## Deploy to production via SSM (builds on server)
-	@$(MAKE) deploy ENV=production
-
-deploy: ## Internal: Test, push, then deploy (use SKIP_TESTS=1 or SKIP_PUSH=1 to skip)
-ifndef SKIP_TESTS
+deploy-production: ## Deploy to production via SST (S3 + CloudFront + Lambda)
+	@echo "🚀 Deploying to production with SST..."
+	@echo ""
 	@echo "🧪 Running pre-deployment checks..."
+	@npm run build
 	@echo ""
-	@echo "1️⃣  Testing frontend build (catches build errors)..."
-	@$(MAKE) build-local
-	@echo ""
-	@echo "✅ All pre-deployment checks passed!"
-	@echo ""
-endif
-ifndef SKIP_PUSH
 	@echo "📤 Pushing to GitHub..."
-	@git push origin main || (echo "❌ Push failed. Use SKIP_PUSH=1 to deploy without pushing." && exit 1)
+	@git push origin main || (echo "⚠️  Push failed, but continuing deployment..." && sleep 2)
 	@echo ""
-endif
-	@./deploy.sh $(ENV)
+	@echo "☁️  Deploying to AWS (S3 + CloudFront + Lambda)..."
+	@npm run sst:deploy -- --stage production
+	@echo ""
+	@echo "✅ Production deployment complete!"
+	@echo "🌐 https://paiss.me"
 
-status: ## Check deployment status
-	@echo "📊 Recent deployments:"
-	@gh run list --limit 5 2>/dev/null || \
-		echo "💡 Check manually: https://github.com/duersjefen/paiss/actions"
+status: ## Check SST deployment status
+	@echo "📊 SST Resources:"
+	@echo ""
+	@echo "Staging:    https://staging.paiss.me"
+	@echo "Production: https://paiss.me"
+	@echo ""
+	@echo "💡 Check AWS Console for CloudFront/Lambda/S3 details"
 
 ##
 ## 🛠️ Utility Commands
@@ -81,8 +88,7 @@ status: ## Check deployment status
 
 clean: ## Clean build artifacts
 	@echo "🧹 Cleaning up..."
-	@rm -rf dist node_modules
-	@docker rmi paiss:local 2>/dev/null || true
+	@rm -rf dist node_modules .sst
 	@echo "✅ Cleanup complete"
 
 ##
