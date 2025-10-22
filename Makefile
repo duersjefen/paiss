@@ -19,24 +19,14 @@ dev: ## Start local development server
 	@echo "💡 Press Ctrl+C to stop"
 	@npm run dev
 
-build-local: ## Build project locally with Vite
+build: ## Build project locally with Vite
 	@echo "⚡ Building project with Vite..."
 	@npm run build
 	@echo "✅ Build complete: dist/"
 
-build: ## Build Docker image locally
-	@echo "🐳 Building Docker image..."
-	@docker build -t paiss:local .
-	@echo "✅ Image built: paiss:local"
-	@echo ""
-	@echo "💡 Run locally with:"
-	@echo "   docker run -p 8080:80 paiss:local"
-
-run: ## Run Docker container locally
-	@echo "🐳 Running Docker container..."
-	@echo "📍 http://localhost:8080"
-	@echo ""
-	@docker run --rm -p 8080:80 --name paiss-local paiss:local
+preview: ## Preview built site locally
+	@echo "👀 Starting preview server..."
+	@npm run preview
 
 stop: ## Stop development server
 	@echo "🛑 Stopping services..."
