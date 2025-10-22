@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Section nav works on all devices (needed for button navigation)
     initSectionNav();
+
+    // Mobile project pagination
+    if (window.innerWidth <= 768) {
+        initProjectsPagination();
+    }
 });
 
 // =============================================================================
@@ -655,5 +660,59 @@ function initHeroTyping() {
 
     // Start typing animation
     type();
+}
+
+// =============================================================================
+// Mobile Projects Pagination
+// =============================================================================
+function initProjectsPagination() {
+    const projectsSection = document.querySelector('#projects .container');
+    const projectsGrid = document.querySelector('.projects-grid');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    if (!projectsGrid || projectCards.length === 0) return;
+
+    // Create pagination container
+    const paginationContainer = document.createElement('div');
+    paginationContainer.className = 'projects-pagination';
+
+    // Create dots for each card
+    projectCards.forEach((card, index) => {
+        const dot = document.createElement('div');
+        dot.className = 'pagination-dot';
+        if (index === 0) dot.classList.add('active');
+
+        // Click to scroll to card
+        dot.addEventListener('click', () => {
+            const cardWidth = projectsGrid.offsetWidth;
+            projectsGrid.scrollTo({
+                left: cardWidth * index,
+                behavior: 'smooth'
+            });
+        });
+
+        paginationContainer.appendChild(dot);
+    });
+
+    // Insert pagination after projects grid
+    projectsGrid.parentElement.appendChild(paginationContainer);
+
+    // Update active dot on scroll
+    const updateActiveDot = () => {
+        const scrollLeft = projectsGrid.scrollLeft;
+        const cardWidth = projectsGrid.offsetWidth;
+        const activeIndex = Math.round(scrollLeft / cardWidth);
+
+        const dots = paginationContainer.querySelectorAll('.pagination-dot');
+        dots.forEach((dot, index) => {
+            if (index === activeIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    };
+
+    projectsGrid.addEventListener('scroll', updateActiveDot, { passive: true });
 }
 

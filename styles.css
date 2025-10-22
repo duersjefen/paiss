@@ -2515,42 +2515,62 @@ footer::before {
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         gap: 16px;
-        padding-bottom: 20px;
-        scrollbar-width: thin;
-        scrollbar-color: var(--accent) var(--border);
+        /* Break out of container padding to full viewport width */
+        margin-left: -20px;
+        margin-right: -20px;
+        padding: 0 20px 48px 20px; /* 48px bottom for pagination dots */
+        /* Hide scrollbar */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        /* Snap alignment accounting for padding */
+        scroll-padding: 0 20px;
     }
 
     .projects-grid::-webkit-scrollbar {
-        height: 6px;
-    }
-
-    .projects-grid::-webkit-scrollbar-track {
-        background: var(--border);
-        border-radius: 10px;
-    }
-
-    .projects-grid::-webkit-scrollbar-thumb {
-        background: var(--accent);
-        border-radius: 10px;
+        display: none;
     }
 
     .project-card {
-        min-width: 85%;
-        scroll-snap-align: center;
+        /* Full viewport width minus container padding and gap */
+        width: calc(100vw - 56px);
+        min-width: calc(100vw - 56px);
+        scroll-snap-align: start;
         padding: 24px;
-        touch-action: manipulation; /* Prevent zoom on tap */
-        user-select: none; /* Prevent text selection while scrolling */
+        touch-action: manipulation;
+        user-select: none;
+        flex-shrink: 0;
     }
 
     .project-card:nth-child(1) {
         grid-row: auto;
-        min-width: 85%;
     }
 
     .project-card:nth-child(2),
     .project-card:nth-child(3) {
         min-height: auto;
-        min-width: 85%;
+    }
+
+    /* Pagination dots for mobile */
+    .projects-pagination {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 24px;
+    }
+
+    .pagination-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .pagination-dot.active {
+        background: var(--accent);
+        transform: scale(1.3);
+        box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
     }
 
     /* Minimal cards on mobile - hide details */
