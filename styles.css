@@ -522,6 +522,14 @@ nav {
     padding: 0 20px; /* Extra padding for text */
 }
 
+/* Remove min-width on very small screens to prevent overflow */
+@media (max-width: 480px) {
+    .stat-giant-container {
+        min-width: 0;
+        padding: 0 10px;
+    }
+}
+
 .stat-giant-number {
     font-size: 180px;
     font-weight: 900;
@@ -639,7 +647,7 @@ nav {
     color: var(--text-dark);
     min-height: 140px; /* Reserve space for 2 lines of text to prevent layout shift */
     display: flex;
-    align-items: flex-start;
+    align-items: center; /* Center vertically when one line, flows naturally with multiple lines */
 }
 
 .gradient-text {
@@ -1869,17 +1877,29 @@ section {
 /* Mobile-friendly chips */
 @media (max-width: 768px) {
     .chip-group {
-        gap: 8px;
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 2 columns for symmetry */
+        gap: 10px;
     }
 
     .chip {
         padding: 14px 18px;
         font-size: 16px; /* Prevent iOS zoom */
         min-height: 48px; /* Easy tap target */
+        width: 100%;
+        justify-content: center;
     }
 
     .chip-icon {
         font-size: 20px;
+    }
+}
+
+/* Very small screens - single column for better readability */
+@media (max-width: 400px) {
+    .chip-group {
+        grid-template-columns: 1fr; /* Single column on very small screens */
+        gap: 8px;
     }
 }
 
@@ -2273,6 +2293,7 @@ footer::before {
     .hero-title {
         font-size: 48px;
         min-height: 120px; /* Adjust for 48px font size, 2 lines */
+        align-items: center; /* Center vertically on tablet */
     }
 
     .section-title {
@@ -2410,7 +2431,7 @@ footer::before {
         height: 126px; /* Fixed height for 3 lines (38px * 1.1 line-height * 3) */
         min-height: 126px;
         display: flex;
-        align-items: flex-start;
+        align-items: center; /* Center vertically on mobile */
     }
 
     .hero-description {
@@ -2700,7 +2721,7 @@ footer::before {
         height: 95px; /* Fixed height for 3 lines (28px * 1.1 line-height * 3) */
         min-height: 95px;
         display: flex;
-        align-items: flex-start;
+        align-items: center; /* Center vertically on very small screens */
     }
 
     .hero-description {
@@ -2750,9 +2771,10 @@ footer::before {
         margin-bottom: 24px;
     }
 
-    /* Hide "Your Project Next" card on very small screens */
+    /* Show "Your Project Next" card on very small screens - keep it visible */
     .project-card.coming-soon {
-        display: none;
+        display: flex;
+        flex-direction: column;
     }
 
     .stat-number {
