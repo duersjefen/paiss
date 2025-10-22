@@ -1799,8 +1799,19 @@ section {
 
 .chip-input {
     position: absolute;
+    width: 1px;
+    height: 1px;
     opacity: 0;
-    pointer-events: none;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+/* Focus indicator for keyboard navigation */
+.chip-input:focus + .chip {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
 }
 
 .chip {

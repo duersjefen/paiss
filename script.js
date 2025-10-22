@@ -486,10 +486,14 @@ function initContactForm() {
 
         // Get form data
         const formData = new FormData(form);
+
+        // Get all selected project types
+        const projectTypes = Array.from(formData.getAll('project-type'));
+
         const data = {
             name: formData.get('name'),
             email: formData.get('email'),
-            projectType: formData.get('project-type'),
+            projectType: projectTypes,
             message: formData.get('message')
         };
 
@@ -516,16 +520,28 @@ function initContactForm() {
         submitButton.innerHTML = '<span>Sending...</span>';
 
         try {
-            // Simulate form submission (replace with actual endpoint)
-            // In production, you'd send to a backend endpoint like:
-            // const response = await fetch('/api/contact', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify(data)
-            // });
+            // Get API URL from environment (injected by SST at build time)
+            const apiUrl = import.meta.env.VITE_API_URL;
 
-            // For demo purposes, simulate a delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            if (!apiUrl) {
+                console.error('API URL not configured');
+                throw new Error('API URL not configured');
+            }
+
+            // Send to backend API
+            const response = await fetch(`${apiUrl}/contact`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to send message');
+            }
 
             // Show success message
             showFormSuccess();
@@ -535,7 +551,7 @@ function initContactForm() {
 
         } catch (error) {
             console.error('Form submission error:', error);
-            showFormError('Something went wrong. Please email me directly at info@paiss.me');
+            showFormError(error.message || 'Something went wrong. Please email me directly at info@paiss.me');
         } finally {
             // Re-enable submit button
             submitButton.disabled = false;

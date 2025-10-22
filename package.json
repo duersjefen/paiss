@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "> Company website and landing page",
   "main": "script.js",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sst:dev": "sst dev",
+    "sst:deploy": "sst deploy",
+    "sst:remove": "sst remove"
   },
   "repository": {
     "type": "git",
@@ -15,12 +19,16 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/duersjefen/paiss/issues"
   },
   "homepage": "https://github.com/duersjefen/paiss#readme",
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.145",
+    "sst": "^3.3.21",
     "vite": "^7.1.9"
+  },
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.709.0"
   }
 }
