@@ -13,6 +13,9 @@
 ##
 
 dev: ## Start local development server
+	@echo "🛑 Stopping any existing server on port 8002..."
+	@-lsof -ti:8002 | xargs kill -9 2>/dev/null || true
+	@sleep 1
 	@echo "🚀 Starting Vite development server..."
 	@echo "📍 http://localhost:8002"
 	@echo ""

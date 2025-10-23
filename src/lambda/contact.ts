@@ -9,6 +9,7 @@ interface ContactFormData {
   email: string;
   projectType: string[];
   message: string;
+  turnstileToken: string;
 }
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -42,6 +43,50 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     }
 
     const data: ContactFormData = JSON.parse(event.body);
+
+    // Verify Turnstile token
+    if (!data.turnstileToken) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Security verification required' }),
+      };
+    }
+
+    const turnstileSecretKey = process.env.TURNSTILE_SECRET_KEY;
+    if (!turnstileSecretKey) {
+      console.error('TURNSTILE_SECRET_KEY environment variable not set');
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: 'Server configuration error' }),
+      };
+    }
+
+    const turnstileVerification = await fetch(
+      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          secret: turnstileSecretKey,
+          response: data.turnstileToken,
+        }),
+      }
+    );
+
+    const turnstileResult = await turnstileVerification.json();
+
+    if (!turnstileResult.success) {
+      console.log('Turnstile verification failed', turnstileResult);
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Security verification failed. Please try again.' }),
+      };
+    }
 
     // Validate required fields
     if (!data.name || data.name.length < 2) {

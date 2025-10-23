@@ -9,7 +9,6 @@ export default $config({
       providers: {
         aws: {
           region: "eu-north-1",
-          profile: "default", // Using personal AWS account
         },
       },
     };
@@ -43,6 +42,7 @@ export default $config({
       ],
       environment: {
         STAGE: $app.stage,
+        TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY || "",
       },
     });
 
@@ -55,6 +55,7 @@ export default $config({
       },
       environment: {
         VITE_API_URL: api.url,
+        VITE_TURNSTILE_SITE_KEY: process.env.TURNSTILE_SITE_KEY || "",
       },
       // Custom domain with Route53 DNS management
       domain: $app.stage === "staging" ? "staging.paiss.me" : "paiss.me",

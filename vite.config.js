@@ -18,5 +18,8 @@ export default defineConfig({
         main: './index.html'
       }
     }
+  },
+  define: {
+    'TURNSTILE_SITE_KEY': JSON.stringify(process.env.VITE_TURNSTILE_SITE_KEY || '')
   }
 })

@@ -2827,3 +2827,19 @@ footer::before {
         padding: 24px;
     }
 }
+
+/* =============================================================================
+   Cloudflare Turnstile Styling
+   ============================================================================= */
+.cf-turnstile {
+    display: flex !important;
+    justify-content: center !important;
+    margin: 0 auto !important;
+}
+
+/* Style the iframe container */
+.form-group:has(.cf-turnstile) {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0;
+}

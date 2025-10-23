@@ -495,11 +495,15 @@ function initContactForm() {
         // Get all selected project types
         const projectTypes = Array.from(formData.getAll('project-type'));
 
+        // Get Turnstile token
+        const turnstileResponse = formData.get('cf-turnstile-response');
+
         const data = {
             name: formData.get('name'),
             email: formData.get('email'),
             projectType: projectTypes,
-            message: formData.get('message')
+            message: formData.get('message'),
+            turnstileToken: turnstileResponse
         };
 
         // Basic client-side validation
@@ -515,6 +519,11 @@ function initContactForm() {
 
         if (!data.message || data.message.length < 10) {
             showFormError('Please enter a message (at least 10 characters)');
+            return;
+        }
+
+        if (!data.turnstileToken) {
+            showFormError('Please complete the security verification');
             return;
         }
 

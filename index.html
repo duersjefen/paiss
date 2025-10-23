@@ -32,6 +32,9 @@ AI role:       Implementation, optimization
     <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="micro-interactions.css">
+
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
     <!-- Scroll Progress Indicator -->
@@ -597,6 +600,11 @@ AI role:       Implementation, optimization
                             minlength="10"
                         ></textarea>
                         <span class="form-error" data-field="message"></span>
+                    </div>
+
+                    <!-- Cloudflare Turnstile Widget -->
+                    <div class="form-group">
+                        <div class="cf-turnstile" data-sitekey="0x4AAAAAAB8P88nm-dPCaSow" data-theme="light"></div>
                     </div>
 
                     <!-- Submit Button -->

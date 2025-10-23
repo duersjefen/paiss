@@ -8,9 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "sst:dev": "sst dev",
-    "sst:deploy": "sst deploy",
-    "sst:remove": "sst remove"
+    "sst:dev": "AWS_PROFILE=paiss-website sst dev",
+    "sst:deploy": "AWS_PROFILE=paiss-website sst deploy",
+    "sst:remove": "AWS_PROFILE=paiss-website sst remove"
   },
   "repository": {
     "type": "git",
