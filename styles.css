@@ -2831,15 +2831,47 @@ footer::before {
 /* =============================================================================
    Cloudflare Turnstile Styling
    ============================================================================= */
+
+/* Subtle container for Turnstile widget */
+.form-group:has(.cf-turnstile) {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    margin: 8px 0;
+}
+
 .cf-turnstile {
     display: flex !important;
     justify-content: center !important;
     margin: 0 auto !important;
+    padding: 16px !important;
+    background: rgba(248, 250, 252, 0.5) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(226, 232, 240, 0.6) !important;
+    transition: all 0.3s ease !important;
 }
 
-/* Style the iframe container */
-.form-group:has(.cf-turnstile) {
-    display: flex;
-    justify-content: center;
-    padding: 8px 0;
+/* Subtle hover effect */
+.cf-turnstile:hover {
+    background: rgba(248, 250, 252, 0.8) !important;
+    border-color: rgba(6, 182, 212, 0.2) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Verified state (when Turnstile shows checkmark) */
+.cf-turnstile[data-state="verified"] {
+    background: rgba(16, 185, 129, 0.05) !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .cf-turnstile {
+        padding: 12px !important;
+        max-width: 100% !important;
+    }
+
+    .form-group:has(.cf-turnstile) {
+        padding: 16px 0;
+    }
 }
