@@ -602,11 +602,6 @@ AI role:       Implementation, optimization
                         <span class="form-error" data-field="message"></span>
                     </div>
 
-                    <!-- Cloudflare Turnstile Widget -->
-                    <div class="form-group">
-                        <div class="cf-turnstile" data-sitekey="0x4AAAAAAB8P88nm-dPCaSow" data-theme="light"></div>
-                    </div>
-
                     <!-- Submit Button -->
                     <button type="submit" class="btn btn-primary form-submit">
                         <span>Get My Response</span>
@@ -614,6 +609,20 @@ AI role:       Implementation, optimization
                             <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/>
                         </svg>
                     </button>
+
+                    <!-- Cloudflare Turnstile Widget -->
+                    <div class="form-group turnstile-wrapper">
+                        <label class="turnstile-label">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <path d="M9 12l2 2 4-4"/>
+                            </svg>
+                            Security Check
+                        </label>
+                        <div class="turnstile-container">
+                            <div class="cf-turnstile" data-sitekey="0x4AAAAAAB8P88nm-dPCaSow" data-theme="light"></div>
+                        </div>
+                    </div>
 
                     <!-- Success Message -->
                     <div class="form-message form-success" style="display: none;">

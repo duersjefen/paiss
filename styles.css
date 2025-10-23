@@ -2829,49 +2829,155 @@ footer::before {
 }
 
 /* =============================================================================
-   Cloudflare Turnstile Styling
+   Cloudflare Turnstile Styling - Premium Design
    ============================================================================= */
 
-/* Subtle container for Turnstile widget */
-.form-group:has(.cf-turnstile) {
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
-    margin: 8px 0;
+/* Wrapper with proper spacing */
+.turnstile-wrapper {
+    margin: 24px 0;
 }
 
+/* Label with icon */
+.turnstile-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+
+.turnstile-label svg {
+    stroke: var(--accent);
+    flex-shrink: 0;
+}
+
+/* Container with glass-morphism effect */
+.turnstile-container {
+    position: relative;
+    padding: 24px;
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.9) 0%,
+        rgba(248, 250, 252, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid rgba(226, 232, 240, 0.8);
+    border-radius: 16px;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Subtle decorative gradient bar on top */
+.turnstile-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 3px;
+    background: var(--gradient-accent);
+    border-radius: 0 0 3px 3px;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+/* Hover state */
+.turnstile-container:hover {
+    border-color: rgba(6, 182, 212, 0.4);
+    box-shadow:
+        0 8px 24px rgba(6, 182, 212, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+}
+
+.turnstile-container:hover::before {
+    opacity: 0.6;
+}
+
+/* Verified state - green success glow */
+.turnstile-container.verified {
+    background: linear-gradient(135deg,
+        rgba(240, 253, 244, 0.95) 0%,
+        rgba(220, 252, 231, 0.95) 100%);
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow:
+        0 8px 24px rgba(16, 185, 129, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.turnstile-container.verified::before {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    opacity: 0.8;
+}
+
+/* The actual Turnstile widget */
 .cf-turnstile {
     display: flex !important;
     justify-content: center !important;
-    margin: 0 auto !important;
-    padding: 16px !important;
-    background: rgba(248, 250, 252, 0.5) !important;
-    border-radius: 12px !important;
-    border: 1px solid rgba(226, 232, 240, 0.6) !important;
-    transition: all 0.3s ease !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
 }
 
-/* Subtle hover effect */
-.cf-turnstile:hover {
-    background: rgba(248, 250, 252, 0.8) !important;
-    border-color: rgba(6, 182, 212, 0.2) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+/* Loading state animation */
+.turnstile-container.loading {
+    position: relative;
 }
 
-/* Verified state (when Turnstile shows checkmark) */
-.cf-turnstile[data-state="verified"] {
-    background: rgba(16, 185, 129, 0.05) !important;
-    border-color: rgba(16, 185, 129, 0.3) !important;
+.turnstile-container.loading::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(6, 182, 212, 0.3),
+        transparent);
+    border-radius: 16px;
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
-    .cf-turnstile {
-        padding: 12px !important;
-        max-width: 100% !important;
+    .turnstile-container {
+        padding: 20px 16px;
+        border-radius: 12px;
     }
 
-    .form-group:has(.cf-turnstile) {
-        padding: 16px 0;
+    .turnstile-container::before {
+        left: 12px;
+        right: 12px;
+    }
+
+    .turnstile-label {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .turnstile-wrapper {
+        margin: 20px 0;
+    }
+
+    .turnstile-container {
+        padding: 16px 12px;
     }
 }
