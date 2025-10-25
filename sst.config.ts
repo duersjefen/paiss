@@ -3,7 +3,7 @@
 export default $config({
   app(input) {
     return {
-      name: "paiss",
+      name: "paiss-website",
       removal: input?.stage === "production" ? "retain" : "remove",
       home: "aws",
       providers: {
@@ -47,7 +47,7 @@ export default $config({
     });
 
     // Static site configuration (Vite build)
-    const site = new sst.aws.StaticSite("PaissSite", {
+    const site = new sst.aws.StaticSite("PaissWebsiteSite", {
       path: ".",
       build: {
         command: "npm run build",

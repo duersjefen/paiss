@@ -30,10 +30,10 @@ Visit: http://localhost:8002
 
 ```bash
 # Build image
-docker build -t paiss .
+docker build -t paiss-website .
 
 # Run locally
-docker run -p 8080:80 paiss
+docker run -p 8080:80 paiss-website
 ```
 
 ## 🔄 Deployment
@@ -41,7 +41,7 @@ docker run -p 8080:80 paiss
 Automatic deployment via GitHub Actions:
 
 1. **Push to main** → GitHub Actions builds Docker image
-2. **On EC2**: `./lib/deploy.sh paiss production`
+2. **On EC2**: `./lib/deploy.sh paiss-website production`
 3. **Zero-downtime deployment** with blue-green strategy
 
 ## 📊 Monitoring
