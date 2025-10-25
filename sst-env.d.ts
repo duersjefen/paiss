@@ -9,7 +9,7 @@ declare module "sst" {
       "type": "sst.aws.ApiGatewayV2"
       "url": string
     }
-    "PaissSite": {
+    "PaissWebsiteSite": {
       "type": "sst.aws.StaticSite"
       "url": string
     }
