@@ -1,5 +1,5 @@
 {
-  "name": "paiss",
+  "name": "paiss-website",
   "version": "1.0.0",
   "description": "> Company website and landing page",
   "main": "script.js",
@@ -14,15 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/duersjefen/paiss.git"
+    "url": "git+https://github.com/duersjefen/paiss-website.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/duersjefen/paiss/issues"
+    "url": "https://github.com/duersjefen/paiss-website/issues"
   },
-  "homepage": "https://github.com/duersjefen/paiss#readme",
+  "homepage": "https://github.com/duersjefen/paiss-website#readme",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.145",
     "sst": "^3.3.21",

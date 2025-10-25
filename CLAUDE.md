@@ -47,7 +47,7 @@ make status                # Check deployment status
 ## 🏗️ PROJECT STRUCTURE
 
 ```
-paiss/
+paiss-website/
 ├── index.html              # Main landing page
 ├── styles.css              # Styling
 ├── script.js               # JavaScript animations
@@ -198,3 +198,4 @@ make deploy-production  # Deploys to https://paiss.me
 
 **Generated:** 2025-10-09
 **Platform:** https://github.com/duersjefen/multi-tenant-platform
+**Repository:** https://github.com/duersjefen/paiss-website
