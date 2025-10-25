@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "sst:dev": "AWS_PROFILE=paiss-website sst dev",
+    "sst:dev": "AWS_PROFILE=paiss-website sst dev --stage dev",
     "sst:deploy": "AWS_PROFILE=paiss-website sst deploy",
     "sst:remove": "AWS_PROFILE=paiss-website sst remove"
   },

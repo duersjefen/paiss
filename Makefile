@@ -4,7 +4,7 @@
 # Simple static site development and deployment workflow
 # =============================================================================
 
-.PHONY: help dev build stop deploy deploy-staging deploy-production status clean
+.PHONY: help dev dev-sst build stop deploy deploy-staging deploy-production remove-dev status clean
 
 .DEFAULT_GOAL := help
 
@@ -12,15 +12,22 @@
 ## 🚀 Development Commands
 ##
 
-dev: ## Start local development server
-	@echo "🛑 Stopping any existing server on port 8002..."
-	@-lsof -ti:8002 | xargs kill -9 2>/dev/null || true
-	@sleep 1
+dev: ## Start local development server (Vite only, no AWS)
 	@echo "🚀 Starting Vite development server..."
-	@echo "📍 http://localhost:8002"
+	@echo "📍 Will use next available port (typically 8002 or 5173)"
 	@echo ""
+	@echo "💡 Multiple instances can run simultaneously on different ports"
 	@echo "💡 Press Ctrl+C to stop"
 	@npm run dev
+
+dev-sst: ## Start SST dev mode (AWS resources + Vite)
+	@echo "🚀 Starting SST dev mode (AWS resources + Vite)..."
+	@echo "⚙️  Stage: dev"
+	@echo "☁️  AWS resources will be created/updated"
+	@echo ""
+	@echo "💡 This creates isolated dev infrastructure in AWS"
+	@echo "💡 Press Ctrl+C to stop"
+	@npm run sst:dev
 
 build: ## Build project locally with Vite
 	@echo "⚡ Building project with Vite..."
@@ -67,9 +74,23 @@ deploy-production: ## Deploy to production via SST (S3 + CloudFront + Lambda)
 	@echo "✅ Production deployment complete!"
 	@echo "🌐 https://paiss.me"
 
+remove-dev: ## Remove dev stage AWS resources
+	@echo "🗑️  Removing dev stage resources..."
+	@echo "⚠️  This will delete all dev infrastructure in AWS"
+	@echo ""
+	@read -p "Are you sure? [y/N] " -n 1 -r; \
+	echo; \
+	if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
+		npm run sst:remove -- --stage dev; \
+		echo "✅ Dev stage resources removed"; \
+	else \
+		echo "❌ Cancelled"; \
+	fi
+
 status: ## Check SST deployment status
 	@echo "📊 SST Resources:"
 	@echo ""
+	@echo "Dev:        CloudFront URL (use 'make dev-sst' to see)"
 	@echo "Staging:    https://staging.paiss.me"
 	@echo "Production: https://paiss.me"
 	@echo ""
