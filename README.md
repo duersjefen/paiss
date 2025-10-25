@@ -2,51 +2,92 @@
 
 > Company website and landing page
 
-## 🌐 Live Site
+## 🌐 Live Sites
 
 - **Production**: https://paiss.me
+- **Staging**: https://staging.paiss.me
+- **Dev**: CloudFront URL (temporary, created via `make dev-sst`)
 
 ## 🏗️ Tech Stack
 
-- **Frontend**: HTML5, CSS3 (Vanilla)
-- **Server**: Nginx (Alpine Linux)
-- **Deployment**: Docker + Multi-tenant Platform
-- **CI/CD**: GitHub Actions
-- **Hosting**: AWS EC2
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Build Tool**: Vite
+- **Infrastructure**: SST v3 (AWS CDK)
+- **Hosting**: S3 + CloudFront (CDN)
+- **Backend**: API Gateway + Lambda
+- **Email**: AWS SES
+- **DNS**: Route53
+- **Region**: eu-north-1
 
 ## 🚀 Development
 
+### Quick Start
+
 ```bash
-# Start Vite dev server (recommended)
+# Local development (Vite only, no AWS)
 make dev
 
-# Or build locally
-make build-local
+# SST dev mode (with AWS resources)
+make dev-sst
+
+# Build locally
+make build
+
+# Preview production build
+make preview
 ```
 
-Visit: http://localhost:8002
+### Environment Stages
 
-## 📦 Docker
+**Dev** (Local Development)
+- Uses `--stage dev` for isolated AWS resources
+- No custom domain (uses CloudFront URL)
+- Multiple instances can run on different ports (auto-detected)
+- Run `make dev-sst` to start with AWS integration
+- Clean up: `make remove-dev`
 
-```bash
-# Build image
-docker build -t paiss-website .
+**Staging**
+- Custom domain: https://staging.paiss.me
+- Deploy: `make deploy-staging`
+- Used for testing before production
 
-# Run locally
-docker run -p 8080:80 paiss-website
-```
+**Production**
+- Custom domain: https://paiss.me
+- Deploy: `make deploy-production`
+- Retention policy: AWS resources retained on `sst remove`
+
+### Port Handling
+
+Vite automatically detects port conflicts and prompts for the next available port:
+- Default: 8002
+- Fallback: 5173, 5174, etc.
+- Multiple dev instances can run simultaneously
 
 ## 🔄 Deployment
 
-Automatic deployment via GitHub Actions:
+SST-based serverless deployment:
 
-1. **Push to main** → GitHub Actions builds Docker image
-2. **On EC2**: `./lib/deploy.sh paiss-website production`
-3. **Zero-downtime deployment** with blue-green strategy
+```bash
+# Deploy to staging
+make deploy-staging
 
-## 📊 Monitoring
+# Deploy to production
+make deploy-production
 
-View application metrics at: https://monitoring.paiss.me
+# Check status
+make status
+```
+
+### How It Works
+
+1. **Build** → Vite compiles to `dist/`
+2. **Deploy** → SST updates AWS infrastructure:
+   - S3 bucket for static files
+   - CloudFront distribution (CDN)
+   - Lambda function (contact form)
+   - API Gateway endpoint
+   - Route53 DNS (staging/production only)
+3. **Propagation** → 2-5 minutes for CloudFront/DNS
 
 ## 🎨 Branding
 

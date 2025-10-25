@@ -18,8 +18,13 @@ export default $config({
     const api = new sst.aws.ApiGatewayV2("ContactApi", {
       cors: {
         allowOrigins: [
-          $app.stage === "staging" ? "https://staging.paiss.me" : "https://paiss.me",
-          "http://localhost:8002", // Local development
+          $app.stage === "production"
+            ? "https://paiss.me"
+            : $app.stage === "staging"
+            ? "https://staging.paiss.me"
+            : "http://localhost:*", // Dev stage - allow any localhost port
+          "http://localhost:8002", // Default Vite port
+          "http://localhost:5173", // Alternative Vite port
         ],
         allowMethods: ["POST", "OPTIONS"],
         allowHeaders: ["Content-Type"],
@@ -57,8 +62,13 @@ export default $config({
         VITE_API_URL: api.url,
         VITE_TURNSTILE_SITE_KEY: process.env.TURNSTILE_SITE_KEY || "",
       },
-      // Custom domain with Route53 DNS management
-      domain: $app.stage === "staging" ? "staging.paiss.me" : "paiss.me",
+      // Custom domain with Route53 DNS management (not for dev stage)
+      domain:
+        $app.stage === "production"
+          ? "paiss.me"
+          : $app.stage === "staging"
+          ? "staging.paiss.me"
+          : undefined, // Dev stage uses CloudFront URL
     });
 
     return {

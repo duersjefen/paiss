@@ -21,20 +21,26 @@ Static company website deployed via multi-tenant platform.
 ### Quick Reference
 ```bash
 # Development
-make dev                   # Start Vite dev server (http://localhost:8002)
-make build-local           # Build project with Vite
-make build                 # Build Docker image locally
-make run                   # Run Docker container locally
+make dev                   # Start Vite dev server only (no AWS)
+make dev-sst               # Start SST dev mode (AWS resources + Vite)
+make build                 # Build project with Vite
+make preview               # Preview production build locally
 
 # Deployment
-make deploy-staging        # Deploy to staging (auto-deploy on push to main)
-make deploy-production     # Deploy to production (requires manual approval)
+make deploy-staging        # Deploy to staging
+make deploy-production     # Deploy to production
+make remove-dev            # Remove dev stage AWS resources
 make status                # Check deployment status
 
-# URLs
-# Local:      http://localhost:8002 (Vite dev server)
+# Environment Stages
+# Dev:        CloudFront URL (use make dev-sst)
 # Staging:    https://staging.paiss.me
 # Production: https://paiss.me
+
+# Port Auto-Detection
+# Vite automatically uses next available port (8002 → 5173 → 5174...)
+# Multiple dev instances can run simultaneously
+# No manual port killing needed
 
 # NEVER use manual server commands - always use Makefile
 # NOTE: Vite has hot-reloading (HMR) - no restart needed for code changes
@@ -68,19 +74,35 @@ paiss-website/
 ## 🚢 INFRASTRUCTURE
 
 ### Local Development
-- **Server:** Vite dev server on `localhost:8002`
+- **Server:** Vite dev server (auto-detects port: 8002 → 5173 → 5174...)
 - **Build Tool:** Vite (Hot Module Replacement, fast refresh)
 - **Files:** HTML/CSS/JS with ES modules
+- **Dev Mode:** `make dev` (Vite only) or `make dev-sst` (with AWS)
 
-### Production Stack (SST)
+### Environment Stages
+**Dev** (Local Development)
+- Uses `--stage dev` for isolated AWS resources
+- No custom domain (uses CloudFront URL)
+- Multiple instances can run on different ports
+- Clean up: `make remove-dev`
+
+**Staging**
+- Custom domain: https://staging.paiss.me
+- Deploy: `make deploy-staging`
+- Testing environment before production
+
+**Production**
+- Custom domain: https://paiss.me
+- Deploy: `make deploy-production`
+- Retention policy: AWS resources retained on `sst remove`
+
+### Infrastructure (SST)
 - **Build:** Vite (builds to `dist/`)
 - **Static Hosting:** S3 + CloudFront (CDN)
 - **Backend API:** API Gateway + Lambda (contact form)
 - **Email:** AWS SES (Simple Email Service)
-- **DNS:** Route53 (managed by SST)
+- **DNS:** Route53 (staging/production only)
 - **SSL:** ACM certificates (automatic via SST)
-- **Domain:** https://paiss.me
-- **Staging:** https://staging.paiss.me
 - **Region:** eu-north-1
 
 ### SST Architecture
@@ -152,8 +174,11 @@ View application metrics at: https://monitoring.paiss.me
 ### Deployment Process
 ```bash
 # 1. Make changes to HTML/CSS/JS
+
 # 2. Test locally with Vite dev server
-make dev  # Visit http://localhost:8002 (HMR enabled)
+make dev  # Vite only (fast, no AWS)
+# or
+make dev-sst  # With AWS resources (tests full stack)
 
 # 3. Commit changes
 git add .
